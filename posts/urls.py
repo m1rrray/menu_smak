@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.urls import path, include
-from . import views
+from .views import index
 from django.contrib.flatpages import views as views_flat
 
 
 urlpatterns = [
-    path('', views.index, name='index')
+    # path('dish_modal/<int:dish_id>/', dish_modal, name='dish_modal'),
+    path('', index, name='index'),
 ]
