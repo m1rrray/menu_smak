@@ -1,0 +1,24 @@
+.main {
+    padding-top: 200px;
+    &__wrapper {
+        display: flex;
+        justify-content: space-between;
+    }
+    &__title{
+        h1 {
+            width: 564px;
+            height: 240px;
+            font-family: 'Oswald';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 96px;
+            line-height: 120px;
+            color: $main-color;
+        }
+    }
+    &__art {
+        img {
+
+        }
+    }
+}

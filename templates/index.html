@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <section class="main">
+        <div class="container">
+            <div class="main__wrapper">
+                <div class="main__title">
+                    <h1>ВКУС ИТАЛИИ С ДОСТАВКОЙ</h1>
+                </div>
+                <div class="main__art">
+                    <img src="{% static "img/main_photo.svg" %}" alt="main" class="main__art-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stocks" id="stocks">
+        <div class="container">
+            <div class="stocks__slider">
+                <div class="stocks__slider-prev">
+                    <img src="{% static "icons/left.svg" %}" alt="prev">
+                </div>
+                <div class="stocks__slider-next">
+                    <img src="{% static "icons/right.svg" %}" alt="next">
+                </div>
+                <div class="stocks__slider-wrapper">
+                    <div class="stocks__slider-inner">
+                        <div class="stocks__slide">
+                            <img src="{% static "img/stock.svg" %}" alt="salat">
+                        </div>
+                        <div class="stocks__slide">
+                            <img src="{% static "img/stock.svg" %}" alt="snake">
+                        </div>
+                        <div class="stocks__slide">
+                            <img src="{% static "img/stock.svg" %}" alt="snake">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="menu" id="menu">
+        <div class="container">
+
+            <div class="menu__tabs">
+                <ul>
+                    <li><button data-filter="all" class="menu__tab menu__tab-active">Все</button></li>
+                    <li><button data-filter="salat" class="menu__tab ">Салаты</button></li>
+                    <li><button data-filter="pasta" class="menu__tab ">Паста</button></li>
+                    <li><button data-filter="pizza" class="menu__tab ">Пицца</button></li>
+                    <li><button data-filter="soup" class="menu__tab ">Супы</button></li>
+                    <li><button data-filter="desert" class="menu__tab ">Десерты</button></li>
+                    <li><button data-filter="drink" class="menu__tab ">Напиток</button></li>
+                </ul>
+            </div>
+
+            <div class="menu__contents">
+            {% for post in page %}
+                <div class="menu__content {{ post.category }}">
+
+                    <div class="menu__content-wrapper">
+                        <div class="menu__content-photo">
+                            <img src="static/img/{{ post.picture }}" alt="snake"  class="menu__content-img">
+                            <div class="menu__content-photo-back"></div>
+                        </div>
+                        <h2 class="menu__content-title">
+                            {{ post.title }}
+                        </h2>
+                        <div class="menu__content-buy">
+                            <div class="menu__content-cost">
+                                <div class="menu__content-price">
+                                    {{ post.price }} ₽
+                                </div>
+                                <div class="menu__contant-grams">
+                                    {{ post.weight }} г
+                                </div>
+                            </div>
+                            <button data-modal class="button">В корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- begining-->
+    {% for post in page %}
+    <div class="modal hide">
+        <!-- hide -->
+
+        <div class="modal__info">
+            <div class="modal__wrapper">
+
+                <div class="modal__food">
+                    <div class="modal__img">
+
+                        <div class="modal__img-food">
+                            <img src={% static "img/detalini.svg" %} alt="food">
+                        </div>
+                        <div class="modal__img-buy">
+                            <div class="modal__img-cost">
+                                <div class="modal__img-price">
+                                    {{ post.price }} ₽
+                                </div>
+                                <div class="modal__img-grams">
+                                    {{ post.weight }} гр
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal__information">
+                        <h2 class="modal__title">
+                            (Для Миши: закрыть на Escape)
+                            {{ post.title }}
+                        </h2>
+                        <p class="modal__text">
+{#                            Паста диталини, зеленый горошек, репчатый лук, панчетта, мясо краба,#}
+{#                            пармезан, помидоры черри, перец чилли, оливковое масло.#}
+                            {{ post.caption }}
+                        </p>
+
+                        <h3 class="modal__subtitle">
+                            С добавками еще вкуснее!
+                        </h3>
+
+                        <div class="modal__supplements">
+                            <div class="modal__supplement">
+                                <div class="modal__supplement-inside">
+                                    <div class="modal__supplement-left">
+                                        <input type="checkbox" id="four-supplement">
+                                        <label for="four-supplement">
+                                            <div class="tick_mark"></div>
+                                        </label>
+                                        <div class="modal__supplement-name">
+                                            перец чилли
+                                        </div>
+                                    </div>
+                                    <div class="modal__supplement-right">
+                                        <div class="modal__supplement-price">
+                                            +13 ₽
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal__buttons">
+                    <div class="button__counter">
+                        <button class="button__minus"><img src={% static "icons/minus.svg" %} alt="minus"></button>
+                        <div class="button__counter-number">1</div>
+                        <button class="button__plus"><img src={% static "icons/plus.svg" %} alt="plus"></button>
+                    </div>
+
+                    <button class="button">Добавить в корзину</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+    {% endfor %}
+    <!-- ending-->
+
+{% endblock %}
