@@ -1,14 +1,11 @@
 from django.shortcuts import render
 from .models import Post
+from cart.forms import AddNewProductCart
 # Create your views here.
 
 
 def index(request):
     page = Post.objects.all()
-    return render(request, 'index.html', {'page': page})
+    cart_product_form = AddNewProductCart()
+    return render(request, 'index.html', {'page': page, 'cart_product_form': cart_product_form})
 
-
-# def dish_modal(request, dish_id):
-#     dish = Post.objects.get(id=dish_id)
-#     context = {'dish': dish}
-#     return render(request, 'dish_modal.html', context)

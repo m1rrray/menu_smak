@@ -102,6 +102,25 @@ window.addEventListener ('DOMContentLoaded', () => {
 
     myapp();
 
+    //добавление количество блюд
+    const minus = document.querySelector('.button__minus'),
+          plus = document.querySelector('.button__plus');
+     number = document.querySelector('.button__counter-number');
+    let drink = document.querySelector(".modal__title");
+
+
+    minus.addEventListener('click', () => {
+        // minusNumber();
+        if (parseInt(number.value) > 1) {
+            number.value = parseInt(number.value) - 1;}
+    });
+
+    plus.addEventListener('click', () => {
+        // plusNumber();
+        if (parseInt(number.value) < 15) {
+            number.value = parseInt(number.value) + 1;
+        }
+    })
 
 
     // Modal
@@ -115,6 +134,7 @@ window.addEventListener ('DOMContentLoaded', () => {
                 if (modal.classList.contains('hide')) {
                     modal.classList.remove('hide');
                     modal.classList.add('fade');
+                    // number.innerHTML = counter;
                 }
             });
         });
@@ -124,6 +144,7 @@ window.addEventListener ('DOMContentLoaded', () => {
         modal.classList.add('hide');
         modal.classList.remove('fade');
         document.body.style.overflow = '';
+        number.value = 1;
     }
 
     document.addEventListener('keydown', (e) => {
@@ -132,12 +153,26 @@ window.addEventListener ('DOMContentLoaded', () => {
         }
     });
 
+    document.addEventListener('keydown', (e) => {
+        if (e.code == 'Escape' && !modal.classList.contains('hide')) {
+            closeModal();
+        }
+    });// закрыти на нажатие вне escape
 
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    }); // закрыти на нажатие вне окна
 
 
 
     closeModal();
     openModal();
+
+
+
+
 
 
     var addButtons = document.querySelectorAll('.button');
@@ -166,11 +201,13 @@ window.addEventListener ('DOMContentLoaded', () => {
             document.querySelector('.modal .modal__img-grams').textContent = dishWeight + 'мл' ;
         else
             document.querySelector('.modal .modal__img-grams').textContent = dishWeight + ' г' ;
+        document.querySelector('#product_id').value = dishId;
 
         // Открываем модальное окно
-        document.querySelector('.modal').classList.add('show');
+        // document.querySelector('.modal').classList.add('show');
       });
     });
+
 
 
 

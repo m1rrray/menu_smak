@@ -5,7 +5,7 @@ from django.db import models
 
 class Post(models.Model):
     picture = models.ImageField()
-    title = models.CharField(max_length=40)
+    title = models.CharField(max_length=100)
     caption = models.CharField(max_length=150)
     price = models.IntegerField()
     category = models.CharField(max_length=30)

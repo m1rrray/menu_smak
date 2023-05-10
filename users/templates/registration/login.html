@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css_additional %}
+    <link rel="stylesheet" href={% static "css/login.min.css" %}>
+{% endblock %}
+
+{% block content %}
+    <section class="login">
+        <div class="container">
+            <div class="login__menu">
+                <div class="login__wrapper">
+                    <div class="login__enter-reg">
+                        <div class="login__enter  left">
+
+                            <div class="login__title">
+                                <h2>Вход в аккаунт</h2>
+                            </div>
+
+                            <form method="post" class="login__form">
+                                {% csrf_token %}
+{#                                {{ form.as_p }}#}
+                                <div>{{ form.non_field_errors }}</div>
+                                <div class="input login__input">
+{#                                    <input type="text" name="name"   class="input__text" required>#}
+                                    {{ form.username }}
+                                    <label class="label">username</label>
+                                </div>
+                                <div class="input login__input">
+{#                                    <input type="password" id="password__enter" name="password"  class="input__text" required>#}
+                                    {{ form.password }}
+                                    <label class="label">Пароль</label>
+                                    <img  data-hide src={% static "icons/open_eye.svg" %} alt="eye" class="open__eye fade hide">
+                                    <img  data-show src={% static "icons/close_eye.svg" %} alt="eye" class="close__eye fade">
+                                </div>
+
+{#                                {% for f in form %}#}
+{#                                    <div class="input login__input">#}
+{#                                        {% if f.field != 'email' %}#}
+{#                                            {{ f }}#}
+{#                                            {{ f.errors }}#}
+{#                                        {% endif %}#}
+{#                                    </div>#}
+{#                                {% endfor %}#}
+{#                                <div class="login__forget">#}
+{#                                    <button data-forget class="button__clear" type="button">Забыли пароль?</button>#}
+{#                                </div>#}
+                                <div class="login__button">
+                                    <button class="button button__big button__dark" type="submit">
+                                        Войти
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+{% endblock %}
+
+{% block js %}
+    <script src="{% static "js/login.js" %}"></script>
+{% endblock %}

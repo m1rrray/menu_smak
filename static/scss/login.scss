@@ -1,0 +1,71 @@
+@import 'all/variables';
+
+.container {
+    display: block;
+    max-width: 1184px;
+    margin: 0 auto;
+}
+
+html {
+    scroll-behavior: smooth;
+    &::-webkit-scrollbar{
+        width: 5px;
+    }
+    &::-webkit-scrollbar-track{
+        background: $second-color;
+    }
+    &::-webkit-scrollbar-thumb{
+        background-color: $main-color;
+        // border-radius: 20px;
+    }
+}
+
+
+
+body {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+}
+
+.hide {
+    display: none;
+} 
+
+.green {
+    color: #169B00;
+}
+
+.grey {
+    color: #737373;
+}
+
+.red {
+    color: #EB0000;
+}
+
+.open__eye {
+    cursor: pointer;
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    top: 13px;
+    right: 10px; 
+}
+
+.close__eye {
+    cursor: pointer;
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    top: 16px;
+    right: 10px; 
+}
+
+
+@import 'all/button';
+@import 'all/header';
+@import 'all/footer';
+@import 'all/title';
+@import 'login/login';

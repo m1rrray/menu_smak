@@ -1,0 +1,61 @@
+@import 'all/variables';
+
+.container {
+    display: block;
+    max-width: 1184px;
+    margin: 0 auto;
+}
+
+.big__container{
+    padding: 210px 0 160px 0;
+    max-width: 1200px;
+    margin: 0 auto;
+   
+}
+
+html {
+    scroll-behavior: smooth;
+    &::-webkit-scrollbar{
+        width: 5px;
+    }
+    &::-webkit-scrollbar-track{
+        background: $second-color;
+    }
+    &::-webkit-scrollbar-thumb{
+        background-color: $main-color;
+        // border-radius: 20px;
+    }
+}
+
+
+
+body {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+}
+
+.hide {
+    display: none;
+} 
+
+.green {
+    color: #169B00;
+}
+
+.grey {
+    color: #737373;
+}
+
+.red {
+    color: #EB0000;
+}
+
+
+@import 'all/button';
+@import 'all/header';
+@import 'all/footer';
+@import 'all/title';
+@import 'profile/profile';
+@import 'profile/history';

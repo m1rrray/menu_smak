@@ -1,0 +1,59 @@
+.footer {
+    box-shadow: 0px 4px 28px rgba(0, 0, 0, 1);
+    background-color: $main-color;
+    min-height: 500px;
+    &__wrapper {
+        padding: 64px 0;
+        display: flex;
+        justify-content: space-between;
+        min-height: 370px;
+    }
+    &__info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    &__link{
+        font-family: 'Ubuntu';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 24px;
+        line-height: 30px;
+        margin-top: 24px;
+        display: block;
+        text-decoration: none;
+        color: #ffffff;
+        &:first-child{
+            margin-top: 0;
+        }
+    }
+    &__politics{
+        h3 {
+            font-family: 'Ubuntu';
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 29px;
+            color: #ffffff;
+            margin: 0 0;
+        }
+    }
+    &__text{
+        font-family: 'Ubuntu';
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+        color: #ffffff;
+        
+    }
+    &__social {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        a{
+            img{
+                width: 32px;
+                height: 32px;
+            }
+        }
+    }
+}

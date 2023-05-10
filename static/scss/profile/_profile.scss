@@ -1,0 +1,76 @@
+.profile {
+    grid-area: profile;
+    position: relative;
+    width: 640px;
+    height: 290px;
+    background: #FFFFFF;
+    box-shadow: 0px 5.84789px 22.1511px rgba(154, 67, 49, 0.1);
+    border-radius: 16px;
+    &__grid{
+        margin-top: 64px;
+        display: grid;
+        grid-template-columns: 640px 520px;
+        grid-template-rows: 290px 290px;
+        column-gap: 40px;
+        row-gap: 40px;
+        grid-template-areas: 
+        "profile history"
+        "adress history";
+    }
+    &__wrapper{
+        padding: 40px;
+    }
+    &__edit{
+        position: absolute;
+        right: 30px;
+        top: 30px;
+    }
+    &__name {
+        h1{
+            font-family: 'Ubuntu';
+            font-weight: 400;
+            font-size: 32px;
+            line-height: 40px;
+            color: #000000;
+            margin: 0;
+        }
+        h2{
+            font-family: 'Ubuntu';
+            font-weight: 400;
+            font-size: 32px;
+            line-height: 40px;
+            color: #000000;
+            margin: 0;
+        }
+    }
+    &__contacts {
+        margin-top: 40px;
+    }
+    &__phone{
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        font-family: 'Ubuntu';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+    }
+    &__email {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        font-family: 'Ubuntu';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+    }
+    &__exit {
+        margin-top: 40px;
+    }
+}
+
+.adress {
+    grid-area: adress;
+}

@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css_additional %}
+    <link rel="stylesheet" href={% static "css/login.min.css" %}>
+{% endblock %}
+
+{% block content %}
+
+    <section class="login">
+        <div class="container">
+            <div class="login__menu">
+                <div class="login__wrapper">
+                    <div class="login__enter-reg">
+{#                        <div class="login__select-menu">#}
+{#                            <a href="#" class="login__close"><img src={% static "icons/close.svg" %} alt="close"></a>#}
+{#                            <div class="login__select">#}
+{#                                <ul>#}
+{#                                    <li><button data-tab data-filter="left" class="login__tab login__tab-left login__tab-active">Вход</button></li>#}
+{#                                    <li><button data-tab data-filter='right' class="login__tab login__tab-right">Регистрация</button></li>#}
+{#                                </ul>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="login__enter  left">#}
+{#                            <div class="login__title">#}
+{#                                <h2>Вход в аккаунт</h2>#}
+{#                            </div>#}
+{#                            <form action="#" class="login__form">#}
+{#                                <div class="input login__input">#}
+{#                                    <input type="text" name="name"   class="input__text" required>#}
+{#                                    <label class="label">Телефон</label>#}
+{#                                </div>#}
+{#                                <div class="input login__input">#}
+{#                                    <input type="password" id="password__enter" name="password"  class="input__text" required>#}
+{#                                    <label class="label">Пароль</label>#}
+{#                                    <img  data-hide src={% static "icons/open_eye.svg" %} alt="eye" class="open__eye fade hide">#}
+{#                                    <img  data-show src={% static "icons/close_eye.svg" %} alt="eye" class="close__eye fade">#}
+{#                                </div>#}
+{#                                <div class="login__forget">#}
+{#                                    <button data-forget class="button__clear">Забыли пароль?</button>#}
+{#                                </div>#}
+{#                                <div class="login__button">#}
+{#                                    <button class="button button__big button__dark">#}
+{#                                        Войти#}
+{#                                    </button>#}
+{#                                </div>#}
+{#                            </form>#}
+{#                        </div>#}
+
+
+                        <div class="login__enter">
+
+                            <div class="login__title">
+                                <h2>Регистрация</h2>
+                            </div>
+
+                            <form  class="login__form" method="post">
+                                {% csrf_token %}
+{#                                {{ form.non_field_errors }}#}
+                                <div>{{ form.non_field_errors }}</div>
+                                <div class="input login__input login__input-reg">
+{#                                    <input type="text"   name="name"  class="input__text" required>#}
+                                    {{ form.fullname }}
+                                    <label class="label">ФИО</label>
+                                </div>
+                                <div class="input login__input login__input-reg">
+{#                                    <input class=" input__text" required>#}
+                                    {{ form.username }}
+                                    <label class="label">Телефон</label>
+                                </div>
+                                <div class="input login__input login__input-reg">
+{#                                    <input class=" input__text" required>#}
+                                    {{ form.phone }}
+                                    <label class="label">Телефон</label>
+                                </div>
+                                <div class="input login__input login__input-reg">
+{#                                    <input type="email"   class=" input__text" required>#}
+                                    {{ form.email }}
+                                    <label class="label">Email</label>
+                                </div>
+                                <div class="input login__input login__input-reg">
+{#                                    <input type="password" id="password__reg" class=" input__text" required value={{ form.password1 }}>#}
+                                    {{ form.password1 }}
+                                    <label class="label">Пароль</label>
+                                    <div>
+                                        <img  data-hide src={% static "icons/open_eye.svg" %} alt="eye" class="open__eye fade hide">
+                                        <img  data-show src={% static "icons/close_eye.svg" %} alt="eye" class="close__eye fade">
+                                    </div>
+                                </div>
+                                <div class="input login__input login__input-reg">
+{#                                    <input type="password" id="password__reg-repeat" class=" input__text" required value={{ form.password2 }}>#}
+                                    {{ form.password2 }}
+                                    <label class="label">Пароль повторно</label>
+                                    <!-- <div>
+                                        <img  data-hide src="icons/open_eye.svg" alt="eye" class="open__eye fade hide">
+                                        <img  data-show src="icons/close_eye.svg" alt="eye" class="close__eye fade">
+                                    </div> -->
+                                </div>
+
+                                <div class="login__politics">
+                                    <input type="checkbox" required>
+                                    <div class="login__politics-text">
+                                        Я принимаю “ <a href="https://burgerkingrus.ru/docs/privacy.pdf">условия использования</a> ” и “<a href="https://burgerkingrus.ru/docs/privacy.pdf">политику конфеденциальности</a> ”
+                                    </div>
+                                </div>
+                                <div class="login__button">
+                                    <button class="button button__big button__dark" type="submit">
+                                        Сохранить и продолжить
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+
+{#                    <div class="login__recovery hide fade">#}
+{#                        <button data-back class="login__tab login__tab-back  button">Назад</button>#}
+{#                        <div class="login__title">#}
+{#                            <h2>Восстановление пароля</h2>#}
+{#                        </div>#}
+{#                        <div class="login__text">#}
+{#                            Укажите номер на который регестрировали аккаунт#}
+{#                        </div>#}
+{#                        <form class="login__form" method="post">#}
+{#                            <div class="input login__input login__input-recovery">#}
+{#                                <input class="input__text" required>#}
+{#                                <label class="label">Телефон</label>#}
+{#                            </div>#}
+{#                            <div class="login__button login__button-recovery">#}
+{#                                <button class="button button__big button__dark">#}
+{#                                    Восстановить#}
+{#                                </button>#}
+{#                            </div>#}
+{#                        </form>#}
+{#                    </div>#}
+
+{#                    <div class="login__code hide">#}
+{#                        <button class="login__tab login__tab-back  button">Назад</button>#}
+{#                        <div class="login__title">#}
+{#                            <h2>Проверьте СМС, мы отправили код для подтверждения</h2>#}
+{#                        </div>#}
+{##}
+{#                        <form action="#" class="login__form">#}
+{#                            <div class="input login__input login__input-recovery">#}
+{#                                <input class="input__text login__input-recovery-text" required>#}
+{#                                <label class="label">Введите код</label>#}
+{#                            </div>#}
+{#                            <div class="login__button login__button-recovery">#}
+{#                                <button class="button button__big button__dark">#}
+{#                                    Восстановить#}
+{#                                </button>#}
+{#                            </div>#}
+{#                        </form>#}
+{#                        <div class="login__text login__text-code">#}
+{#                            Не пришел код? <button class="button__clear button__clear-red">Отправить код снова</button>#}
+{#                        </div>#}
+{#                    </div>#}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+
+{% endblock %}
+
+{% block js %}
+    <script src="{% static "js/login.js" %}"></script>
+{% endblock %}

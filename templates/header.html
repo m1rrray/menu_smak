@@ -1,0 +1,41 @@
+{% load static %}
+<header class="header">
+    <div class="container">
+        <div class="header__wrapper">
+            <div class="header__navigation">
+                <div class="header__logo" >
+                    <a href={% url 'index' %}><img src={% static "icons/logo.svg" %} alt="logo"><a/>
+                </div>
+                <nav class="header__nav">
+                    <a href="#menu" class="header__link">Меню</a>
+                    <a href="#stocks" class="header__link">Акции</a>
+                    <a href="#" class="header__link">О компании</a>
+                    <a href="#" class="header__link">Доставка</a>
+                    <a href="#contact" class="header__link">Поддержка</a>
+                </nav>
+            </div>
+            <div class="header__profile">
+                {% if user.is_authenticated %}
+                    <div class=" header__profile header__profile-login ">
+                        <div class="header__profile-icon">
+                            <a href={% url 'profile' %}><img src={% static "icons/busket.svg" %} alt="busket"></a>
+                        </div>
+                        <div class="header__profile-money">
+                            0 ₽
+                        </div>
+                        <div class="header__profile-img">
+                            <div></div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="header__profile-enter">
+                        <a href={% url 'login' %} class="header__link">Войти</a>
+                        /
+                        <a href={% url 'register' %} class="header__link">Регистрация</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+</header>

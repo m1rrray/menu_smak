@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% block css_additional %}
+    <link rel="stylesheet" href={% static "css/style.min.css" %}>
+{% endblock %}
 {% block content %}
 
     <section class="main">
@@ -52,6 +54,7 @@
                     <li><button data-filter="pasta" class="menu__tab ">Паста</button></li>
                     <li><button data-filter="pizza" class="menu__tab ">Пицца</button></li>
                     <li><button data-filter="soup" class="menu__tab ">Супы</button></li>
+                    <li><button data-filter="hot" class="menu__tab ">Горячее</button></li>
                     <li><button data-filter="desert" class="menu__tab ">Десерты</button></li>
                     <li><button data-filter="drink" class="menu__tab ">Напиток</button></li>
                 </ul>
@@ -61,7 +64,6 @@
             {% for post in page %}
 
                 <div class="menu__content {{ post.category }}">
-
                     <div class="menu__content-wrapper">
                         <div class="menu__content-photo">
                             <img src="static/img/{{ post.picture }}" alt="snake"  class="menu__content-img">
@@ -70,26 +72,28 @@
                         <h2 class="menu__content-title">
                             {{ post.title }}
                         </h2>
-
                         <div class="menu__content-buy">
                             <div class="menu__content-cost">
                                 <div class="menu__content-price">
                                     {{ post.price }} ₽
                                 </div>
                                 {% if post.category != 'drink' %}
-                                    <div class="menu__contant-grams">
+                                    <div class="menu__content-grams">
                                         {{ post.weight }} г
                                     </div>
                                 {% else %}
-                                    <div class="menu__contant-grams">
+                                    <div class="menu__content-grams">
                                         {{ post.weight }} мл
                                     </div>
                                 {% endif %}
                             </div>
-                            <button data-modal class="button" data-dish-id="{{ post.id }}" data-dish-name="{{ post.title }}" data-dish-description="{{ post.caption }}" data-dish-price="{{ post.price }}" data-dish-weight="{{ post.weight }}" data-dish-picture="{{ post.picture }}" data-dish-category="{{ post.category }}">В корзину</button>
-{#                            <a href="{% url 'dish_modal' dish_id=post.id %}" data-toggle="modal" data-target="#myModal" class="button">В корзину</a>#}
+                            <button data-modal class="button" data-dish-id="{{ post.pk }}" data-dish-name="{{ post.title }}"
+                                    data-dish-description="{{ post.caption }}"
+                                    data-dish-price="{{ post.price }}" data-dish-weight="{{ post.weight }}" data-dish-picture="{{ post.picture }}"
+                                    data-dish-category="{{ post.category }}">
+                                В корзину
+                            </button>
                         </div>
-
                     </div>
                 </div>
             {% endfor %}
@@ -114,10 +118,10 @@
                         <div class="modal__img-buy">
                             <div class="modal__img-cost">
                                 <div class="modal__img-price">
-                                             ₽
+
                                 </div>
                                 <div class="modal__img-grams">
-{#                                    {{ post.weight }} гр#}
+
                                 </div>
                             </div>
                         </div>
@@ -157,17 +161,31 @@
 
                     </div>
                 </div>
-
-                <div class="modal__buttons">
+                <form method="post" class="modal__buttons">
+                    {% csrf_token %}
                     <div class="button__counter">
-                        <button class="button__minus"><img src={% static "icons/minus.svg" %} alt="minus"></button>
-                        <div class="button__counter-number">1</div>
-                        <button class="button__plus"><img src={% static "icons/plus.svg" %} alt="plus"></button>
+                        <button class="button__minus" type="button"><img src={% static "icons/minus.svg" %} alt="minus"></button>
+                            {{ cart_product_form.quantity }}
+                        <input type="hidden" id="product_id" value="" >
+                        <button class="button__plus" type="button"><img src={% static "icons/plus.svg" %} alt="plus"></button>
                     </div>
 
-                    <button class="button" >Добавить в корзину</button>
 
-                </div>
+                     <button class="button" >Добавить в корзину</button>
+
+
+                </form>
+{#                    <div class="modal__buttons">#}
+{#                        <div class="button__counter">#}
+{#                            <button class="button__minus"><img src={% static "icons/minus.svg" %} alt="minus"></button>#}
+{#                            <div class="button__counter-number">{{ cart_product_form }}</div>#}
+{#                                {{ cart_product_form }}#}
+{#                            <button class="button__plus"><img src={% static "icons/plus.svg" %} alt="plus"></button>#}
+{#                        </div>#}
+{##}
+{#                        <button class="button" >Добавить в корзину</button>#}
+{#                    </div>#}
+
 
             </div>
 
@@ -177,4 +195,8 @@
     </div>
     <!-- ending-->
 
+{% endblock %}
+
+{% block js %}
+    <script src="{% static "js/script.js" %}"></script>
 {% endblock %}

@@ -1,4 +1,4 @@
-@import './variables.scss';
+@import 'all/variables';
 
 .container {
     display: block;
@@ -8,6 +8,16 @@
 
 html {
     scroll-behavior: smooth;
+    &::-webkit-scrollbar{
+        width: 5px;
+    }
+    &::-webkit-scrollbar-track{
+        background: $second-color;
+    }
+    &::-webkit-scrollbar-thumb{
+        background-color: $main-color;
+        // border-radius: 20px;
+    }
 }
 
 
@@ -21,13 +31,15 @@ body {
 
 .hide {
     display: none;
-} 
+}
 
 
-@import 'blocks/button';
-@import 'blocks/header';
+
+
+@import 'all/button';
+@import 'all/header';
+@import 'all/footer';
 @import 'blocks/slider';
 @import 'blocks/menu';
-@import 'blocks/footer';
 @import 'blocks/main';
 @import 'blocks/modal';
