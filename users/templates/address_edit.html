@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Личный кабинет{% endblock %}
+
+{% block css_additional %}
+    <link rel="stylesheet" href={% static "css/login.min.css" %}>
+    <link rel="stylesheet" href={% static "css/cabinet.min.css" %}>
+{% endblock %}
+
+{% block content %}
+    <section class="login">
+        <div class="container">
+            <div class="login__menu">
+                <div class="login__wrapper">
+                    <div class="login__enter-reg">
+                        <div class="login__enter  left">
+
+                            <div class="login__title">
+                                <h2>Редактирование адреса</h2>
+                            </div>
+
+                            <div class="profile__contacts">
+                            {% for address in addresses %}
+                                <div class="profile__phone">
+                                    {{ address }} <a class="button__clear" href=''>Удалить</a>
+                                </div>
+                            {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

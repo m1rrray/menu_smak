@@ -2,6 +2,10 @@
 {% load static %}
 {% block title %} Личный кабинет{% endblock %}
 
+{% block css_additional %}
+    <link rel="stylesheet" href={% static "css/cabinet.min.css" %}>
+{% endblock %}
+
 {% block content %}
     <section class="big__container">
         <h1 class="title">Личный кабинет</h1>
@@ -10,24 +14,28 @@
                 <div class="profile__wrapper">
                     <div class="profile__edit">
                         <button class="button__clear">
-                            <img src="icons/edit.svg" alt="edit">
+                            <a href={% url "edit_profile" pk=user.pk %}><img src={% static "icons/edit.svg" %} alt="edit"></a>
                         </button>
                     </div>
                     <div class="profile__name">
-                        <h2>Константин Константинопольский</h2>
+                        <h2>{{ user.fullname }}</h2>
                     </div>
                     <div class="profile__contacts">
+                        <div class="profile__email">
+                            Имя пользователя:
+                            {{ user.username }}
+                        </div>
                         <div class="profile__phone">
-                            <img src="icons/phone.svg" alt="phone">
-                            8 888 888 88 88
+                            <img src={% static "icons/phone.svg" %} alt="phone">
+                            {{ user.phone }}
                         </div>
                         <div class="profile__email">
-                            <img src="icons/email.svg" alt="email">
-                            smak.eto.vkusno@gmail.com
+                            <img src={% static "icons/email.svg" %} alt="email">
+                            {{ user.email }}
                         </div>
                     </div>
                     <div class="profile__exit">
-                        <button class="button__clear">Выйти из аккаунта</button>
+                        <a href={% url 'logout' %}><button class="button__clear" >Выйти из аккаунта</button></a>
                     </div>
                 </div>
             </section>
@@ -36,25 +44,28 @@
                 <div class="profile__wrapper">
                     <div class="profile__edit">
                         <button class="button__clear">
-                            <img src="icons/edit.svg" alt="edit">
+                            <a href={% url 'edit_address' pk=user.pk %}><img src={% static "icons/edit.svg" %} alt="edit"></a>
                         </button>
                     </div>
                     <div class="profile__name">
                         <h2>Адреса</h2>
                     </div>
+
                     <div class="profile__contacts">
+                        {% for address in user.addresses.all %}
                         <div class="profile__phone">
-                            Ленина 10, кв 106
+                            {{ address }}
                         </div>
-                        <div class="profile__phone">
-                            Ленина 10, кв 106
-                        </div>
+
+                        {% endfor %}
                     </div>
+
                     <div class="profile__exit">
-                        <button class="button button__big">
-                            <!-- <img src="icons/brown_plus.svg" alt="plus"> -->
-                            Добавить новый адрес    
-                        </button>
+                        <a href={% url 'add_address' pk=user.pk %}>
+                            <button class="button button__big">
+                                Добавить новый адрес
+                            </button>
+                        </a>
                     </div>
                 </div>
             </section>
@@ -86,508 +97,16 @@
                                 </div>
                             </div>
                             <div class="history__food">
-                                <img src="img/detalini.svg" alt="food">
-                                <img src="img/detalini.svg" alt="food">
+                                <img src={% static "img/detalini.svg"%} alt="food">
+                                <img src={% static  "img/detalini.svg" %} alt="food">
                             </div>
                             <div class="history__order-buttons">
                                 <button class="history__order-button button button__big">Повторить заказ</button>
                                 <button class=" button button__border">Открыть чек</button>
                             </div>
                         </div>
-                        <div class="history__order">
-                            <div class="divider"></div>
-                            <div class="history__information">
-                                <div class="history__datatime">
-                                    <div class="history__data">
-                                        04.05.2023
-                                    </div>
-                                    <div class="history__time">
-                                        15:25
-                                    </div>
-                                </div>
-                                <div class="history__info">
-                                    <div class="history__price">
-                                        1200 ₽
-                                    </div>
-                                    <div class="history__delivery green">
-                                        доставлен
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="history__food">
-                                <img src="img/detalini.svg" alt="food">
-                                <img src="img/detalini.svg" alt="food">
-                            </div>
-                            <div class="history__order-buttons">
-                                <button class="history__order-button button button__big">Повторить заказ</button>
-                                <button class=" button button__border">Открыть чек</button>
-                            </div>
-                        </div>
-                        <div class="history__order">
-                            <div class="divider"></div>
-                            <div class="history__information">
-                                <div class="history__datatime">
-                                    <div class="history__data">
-                                        04.05.2023
-                                    </div>
-                                    <div class="history__time">
-                                        15:25
-                                    </div>
-                                </div>
-                                <div class="history__info">
-                                    <div class="history__price">
-                                        1200 ₽
-                                    </div>
-                                    <div class="history__delivery green">
-                                        доставлен
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="history__food">
-                                <img src="img/detalini.svg" alt="food">
-                                <img src="img/detalini.svg" alt="food">
-                            </div>
-                            <div class="history__order-buttons">
-                                <button class="history__order-button button button__big">Повторить заказ</button>
-                                <button class=" button button__border">Открыть чек</button>
-                            </div>
-                        </div>
-                        <div class="history__order">
-                            <div class="divider"></div>
-                            <div class="history__information">
-                                <div class="history__datatime">
-                                    <div class="history__data">
-                                        04.05.2023
-                                    </div>
-                                    <div class="history__time">
-                                        15:25
-                                    </div>
-                                </div>
-                                <div class="history__info">
-                                    <div class="history__price">
-                                        1200 ₽
-                                    </div>
-                                    <div class="history__delivery green">
-                                        доставлен
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="history__food">
-                                <img src="img/detalini.svg" alt="food">
-                                <img src="img/detalini.svg" alt="food">
-                            </div>
-                            <div class="history__order-buttons">
-                                <button class="history__order-button button button__big">Повторить заказ</button>
-                                <button class=" button button__border">Открыть чек</button>
-                            </div>
-                        </div>
-                        <div class="history__order">
-                            <div class="divider"></div>
-                            <div class="history__information">
-                                <div class="history__datatime">
-                                    <div class="history__data">
-                                        04.05.2023
-                                    </div>
-                                    <div class="history__time">
-                                        15:25
-                                    </div>
-                                </div>
-                                <div class="history__info">
-                                    <div class="history__price">
-                                        1200 ₽
-                                    </div>
-                                    <div class="history__delivery green">
-                                        доставлен
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="history__food">
-                                <img src="img/detalini.svg" alt="food">
-                                <img src="img/detalini.svg" alt="food">
-                            </div>
-                            <div class="history__order-buttons">
-                                <button class="history__order-button button button__big">Повторить заказ</button>
-                                <button class=" button button__border">Открыть чек</button>
-                            </div>
-                        </div>
-                        <div class="history__order">
-                            <div class="divider"></div>
-                            <div class="history__information">
-                                <div class="history__datatime">
-                                    <div class="history__data">
-                                        04.05.2023
-                                    </div>
-                                    <div class="history__time">
-                                        15:25
-                                    </div>
-                                </div>
-                                <div class="history__info">
-                                    <div class="history__price">
-                                        1200 ₽
-                                    </div>
-                                    <div class="history__delivery green">
-                                        доставлен
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="history__food">
-                                <img src="img/detalini.svg" alt="food">
-                                <img src="img/detalini.svg" alt="food">
-                            </div>
-                            <div class="history__order-buttons">
-                                <button class="history__order-button button button__big">Повторить заказ</button>
-                                <button class=" button button__border">Открыть чек</button>
-                            </div>
-                        </div>
-                        <div class="history__order">
-                            <div class="divider"></div>
-                            <div class="history__information">
-                                <div class="history__datatime">
-                                    <div class="history__data">
-                                        04.05.2023
-                                    </div>
-                                    <div class="history__time">
-                                        15:25
-                                    </div>
-                                </div>
-                                <div class="history__info">
-                                    <div class="history__price">
-                                        1200 ₽
-                                    </div>
-                                    <div class="history__delivery green">
-                                        доставлен
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="history__food">
-                                <img src="img/detalini.svg" alt="food">
-                                <img src="img/detalini.svg" alt="food">
-                            </div>
-                            <div class="history__order-buttons">
-                                <button class="history__order-button button button__big">Повторить заказ</button>
-                                <button class=" button button__border">Открыть чек</button>
-                            </div>
-                        </div>
-                        <div class="history__order">
-                            <div class="divider"></div>
-                            <div class="history__information">
-                                <div class="history__datatime">
-                                    <div class="history__data">
-                                        04.05.2023
-                                    </div>
-                                    <div class="history__time">
-                                        15:25
-                                    </div>
-                                </div>
-                                <div class="history__info">
-                                    <div class="history__price">
-                                        1200 ₽
-                                    </div>
-                                    <div class="history__delivery green">
-                                        доставлен
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="history__food">
-                                <img src="img/detalini.svg" alt="food">
-                                <img src="img/detalini.svg" alt="food">
-                            </div>
-                            <div class="history__order-buttons">
-                                <button class="history__order-button button button__big">Повторить заказ</button>
-                                <button class=" button button__border">Открыть чек</button>
-                            </div>
-                        </div>
-                        <div class="history__order">
-                            <div class="divider"></div>
-                            <div class="history__information">
-                                <div class="history__datatime">
-                                    <div class="history__data">
-                                        04.05.2023
-                                    </div>
-                                    <div class="history__time">
-                                        15:25
-                                    </div>
-                                </div>
-                                <div class="history__info">
-                                    <div class="history__price">
-                                        1200 ₽
-                                    </div>
-                                    <div class="history__delivery green">
-                                        доставлен
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="history__food">
-                                <img src="img/detalini.svg" alt="food">
-                                <img src="img/detalini.svg" alt="food">
-                            </div>
-                            <div class="history__order-buttons">
-                                <button class="history__order-button button button__big">Повторить заказ</button>
-                                <button class=" button button__border">Открыть чек</button>
-                            </div>
-                        </div>
-                        <div class="history__order">
-                            <div class="divider"></div>
-                            <div class="history__information">
-                                <div class="history__datatime">
-                                    <div class="history__data">
-                                        04.05.2023
-                                    </div>
-                                    <div class="history__time">
-                                        15:25
-                                    </div>
-                                </div>
-                                <div class="history__info">
-                                    <div class="history__price">
-                                        1200 ₽
-                                    </div>
-                                    <div class="history__delivery green">
-                                        доставлен
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="history__food">
-                                <img src="img/detalini.svg" alt="food">
-                                <img src="img/detalini.svg" alt="food">
-                            </div>
-                            <div class="history__order-buttons">
-                                <button class="history__order-button button button__big">Повторить заказ</button>
-                                <button class=" button button__border">Открыть чек</button>
-                            </div>
-                        </div>
-                        <div class="history__order">
-                            <div class="divider"></div>
-                            <div class="history__information">
-                                <div class="history__datatime">
-                                    <div class="history__data">
-                                        04.05.2023
-                                    </div>
-                                    <div class="history__time">
-                                        15:25
-                                    </div>
-                                </div>
-                                <div class="history__info">
-                                    <div class="history__price">
-                                        1200 ₽
-                                    </div>
-                                    <div class="history__delivery green">
-                                        доставлен
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="history__food">
-                                <img src="img/detalini.svg" alt="food">
-                                <img src="img/detalini.svg" alt="food">
-                            </div>
-                            <div class="history__order-buttons">
-                                <button class="history__order-button button button__big">Повторить заказ</button>
-                                <button class=" button button__border">Открыть чек</button>
-                            </div>
-                        </div>
-                        <div class="history__order">
-                            <div class="divider"></div>
-                            <div class="history__information">
-                                <div class="history__datatime">
-                                    <div class="history__data">
-                                        04.05.2023
-                                    </div>
-                                    <div class="history__time">
-                                        15:25
-                                    </div>
-                                </div>
-                                <div class="history__info">
-                                    <div class="history__price">
-                                        1200 ₽
-                                    </div>
-                                    <div class="history__delivery green">
-                                        доставлен
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="history__food">
-                                <img src="img/detalini.svg" alt="food">
-                                <img src="img/detalini.svg" alt="food">
-                            </div>
-                            <div class="history__order-buttons">
-                                <button class="history__order-button button button__big">Повторить заказ</button>
-                                <button class=" button button__border">Открыть чек</button>
-                            </div>
-                        </div>
-                        <div class="history__order">
-                            <div class="divider"></div>
-                            <div class="history__information">
-                                <div class="history__datatime">
-                                    <div class="history__data">
-                                        04.05.2023
-                                    </div>
-                                    <div class="history__time">
-                                        15:25
-                                    </div>
-                                </div>
-                                <div class="history__info">
-                                    <div class="history__price">
-                                        1200 ₽
-                                    </div>
-                                    <div class="history__delivery green">
-                                        доставлен
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="history__food">
-                                <img src="img/detalini.svg" alt="food">
-                                <img src="img/detalini.svg" alt="food">
-                            </div>
-                            <div class="history__order-buttons">
-                                <button class="history__order-button button button__big">Повторить заказ</button>
-                                <button class=" button button__border">Открыть чек</button>
-                            </div>
-                        </div>
-                        <div class="history__order">
-                            <div class="divider"></div>
-                            <div class="history__information">
-                                <div class="history__datatime">
-                                    <div class="history__data">
-                                        04.05.2023
-                                    </div>
-                                    <div class="history__time">
-                                        15:25
-                                    </div>
-                                </div>
-                                <div class="history__info">
-                                    <div class="history__price">
-                                        1200 ₽
-                                    </div>
-                                    <div class="history__delivery green">
-                                        доставлен
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="history__food">
-                                <img src="img/detalini.svg" alt="food">
-                                <img src="img/detalini.svg" alt="food">
-                            </div>
-                            <div class="history__order-buttons">
-                                <button class="history__order-button button button__big">Повторить заказ</button>
-                                <button class=" button button__border">Открыть чек</button>
-                            </div>
-                        </div>
-                        <div class="history__order">
-                            <div class="divider"></div>
-                            <div class="history__information">
-                                <div class="history__datatime">
-                                    <div class="history__data">
-                                        04.05.2023
-                                    </div>
-                                    <div class="history__time">
-                                        15:25
-                                    </div>
-                                </div>
-                                <div class="history__info">
-                                    <div class="history__price">
-                                        1200 ₽
-                                    </div>
-                                    <div class="history__delivery green">
-                                        доставлен
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="history__food">
-                                <img src="img/detalini.svg" alt="food">
-                                <img src="img/detalini.svg" alt="food">
-                            </div>
-                            <div class="history__order-buttons">
-                                <button class="history__order-button button button__big">Повторить заказ</button>
-                                <button class=" button button__border">Открыть чек</button>
-                            </div>
-                        </div>
-                        <div class="history__order">
-                            <div class="divider"></div>
-                            <div class="history__information">
-                                <div class="history__datatime">
-                                    <div class="history__data">
-                                        04.05.2023
-                                    </div>
-                                    <div class="history__time">
-                                        15:25
-                                    </div>
-                                </div>
-                                <div class="history__info">
-                                    <div class="history__price">
-                                        1200 ₽
-                                    </div>
-                                    <div class="history__delivery green">
-                                        доставлен
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="history__food">
-                                <img src="img/detalini.svg" alt="food">
-                                <img src="img/detalini.svg" alt="food">
-                            </div>
-                            <div class="history__order-buttons">
-                                <button class="history__order-button button button__big">Повторить заказ</button>
-                                <button class=" button button__border">Открыть чек</button>
-                            </div>
-                        </div>
-                        <div class="history__order">
-                            <div class="divider"></div>
-                            <div class="history__information">
-                                <div class="history__datatime">
-                                    <div class="history__data">
-                                        04.05.2023
-                                    </div>
-                                    <div class="history__time">
-                                        15:25
-                                    </div>
-                                </div>
-                                <div class="history__info">
-                                    <div class="history__price">
-                                        1200 ₽
-                                    </div>
-                                    <div class="history__delivery green">
-                                        доставлен
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="history__food">
-                                <img src="img/detalini.svg" alt="food">
-                                <img src="img/detalini.svg" alt="food">
-                            </div>
-                            <div class="history__order-buttons">
-                                <button class="history__order-button button button__big">Повторить заказ</button>
-                                <button class=" button button__border">Открыть чек</button>
-                            </div>
-                        </div>
-                        <div class="history__order">
-                            <div class="divider"></div>
-                            <div class="history__information">
-                                <div class="history__datatime">
-                                    <div class="history__data">
-                                        04.05.2023
-                                    </div>
-                                    <div class="history__time">
-                                        15:25
-                                    </div>
-                                </div>
-                                <div class="history__info">
-                                    <div class="history__price">
-                                        1200 ₽
-                                    </div>
-                                    <div class="history__delivery green">
-                                        доставлен
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="history__food">
-                                <img src="img/detalini.svg" alt="food">
-                                <img src="img/detalini.svg" alt="food">
-                            </div>
-                            <div class="history__order-buttons">
-                                <button class="history__order-button button button__big">Повторить заказ</button>
-                                <button class=" button button__border">Открыть чек</button>
-                            </div>
-                        </div>
-                    </div>
+
+
                     <div class="history__button">
                         <button class="button button__big button__dark">Открыть историю полностью</button>
                     </div>

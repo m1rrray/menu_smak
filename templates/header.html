@@ -18,14 +18,23 @@
                 {% if user.is_authenticated %}
                     <div class=" header__profile header__profile-login ">
                         <div class="header__profile-icon">
-                            <a href={% url 'profile' %}><img src={% static "icons/busket.svg" %} alt="busket"></a>
+                            <a href="{% url 'cart_detail' %}"><img src={% static "icons/busket.svg" %} alt="busket"></a>
                         </div>
-                        <div class="header__profile-money">
+                        {% if cart|length > 0 %}
+                        <div class="header__profile-money" data-cart-url="{% url 'cart_detail' %}">
+                            {{ cart.get_total_price }} ₽
+                        </div>
+                        {% else  %}
+                            <div class="header__profile-money" data-cart-url="{% url 'cart_detail' %}">
                             0 ₽
                         </div>
-                        <div class="header__profile-img">
-                            <div></div>
-                        </div>
+                        {% endif %}
+
+                         <a href={% url 'profile' pk=user.pk %}>
+                            <div class="header__profile-img">
+
+                            </div>
+                         </a>
                     </div>
                 {% else %}
                     <div class="header__profile-enter">

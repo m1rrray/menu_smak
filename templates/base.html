@@ -39,6 +39,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://fonts.cdnfonts.com/css/verveine" rel="stylesheet">
 
+    <script src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
+
 </head>
 <body>
     {% include 'header.html' %}
@@ -52,5 +54,6 @@
     {% include 'footer.html' %}
 
     {% block js %} {% endblock %}
+{# <script></script>#}
 </body>
 </html>

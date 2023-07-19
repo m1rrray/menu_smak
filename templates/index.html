@@ -96,6 +96,9 @@
                         </div>
                     </div>
                 </div>
+
+
+
             {% endfor %}
             </div>
         </div>
@@ -104,7 +107,7 @@
 
 
     <!-- begining-->
-    <div class="modal hide">
+    <div class="modal hide" >
         <!-- hide -->
         <div class="modal__info">
             <div class="modal__wrapper">
@@ -161,37 +164,60 @@
 
                     </div>
                 </div>
-                <form method="post" class="modal__buttons">
+
+                <form method="post" class="modal__buttons" id="add-to-cart-form" action={% url 'cart_add' %} >
                     {% csrf_token %}
                     <div class="button__counter">
-                        <button class="button__minus" type="button"><img src={% static "icons/minus.svg" %} alt="minus"></button>
+                        <button class="button__minus" type="button"><img src={% static "icons/minus.svg" %} alt="minus" alt=""></button>
                             {{ cart_product_form.quantity }}
-                        <input type="hidden" id="product_id" value="" >
-                        <button class="button__plus" type="button"><img src={% static "icons/plus.svg" %} alt="plus"></button>
+                        <input type="hidden" name="product_id" id="product_id" value={{ cart_product_form.product_id }}
+                        <button class="button__plus" type="button"><img src={% static "icons/plus.svg" %} alt="plus" alt=""></button>
                     </div>
-
-
-                     <button class="button" >Добавить в корзину</button>
-
-
+                    <button class="button" type="submit"  id="add-to-cart-button" >Добавить в корзину</button>
                 </form>
-{#                    <div class="modal__buttons">#}
-{#                        <div class="button__counter">#}
-{#                            <button class="button__minus"><img src={% static "icons/minus.svg" %} alt="minus"></button>#}
-{#                            <div class="button__counter-number">{{ cart_product_form }}</div>#}
-{#                                {{ cart_product_form }}#}
-{#                            <button class="button__plus"><img src={% static "icons/plus.svg" %} alt="plus"></button>#}
-{#                        </div>#}
-{##}
-{#                        <button class="button" >Добавить в корзину</button>#}
-{#                    </div>#}
+
+                <script>
+
+                    const addToCartForm = document.querySelector('#add-to-cart-form');
+                    const addToCartButton = document.querySelector('#add-to-cart-button');
+
+                    addToCartButton.addEventListener('click', (event) => {
+                        event.preventDefault();
+
+                        // Получаем данные из формы
+                        const formData = new FormData(addToCartForm);
+
+                        // Отправляем данные на сервер с помощью AJAX-запроса
+                        fetch(addToCartForm.action, {
+                            method: addToCartForm.method,
+                            headers: {
+                                'X-CSRFToken': document.querySelector('[name="csrfmiddlewaretoken"]').value,
+                            },
+                            body: formData,
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            location.reload();
+                            return response.json();
+                        })
 
 
+                        .then(data => {
+                            console.log(data);
+                            location.reload();
+                        })
+
+                        .catch(error => {
+                            console.error('There was a problem with the fetch operation:', error);
+                        });
+
+
+                    });
+                </script>
             </div>
-
         </div>
-
-
     </div>
     <!-- ending-->
 

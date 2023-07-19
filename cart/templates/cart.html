@@ -1,0 +1,272 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}Корзина{% endblock %}
+
+{% block css_additional %}
+    <link rel="stylesheet" href={% static "css/busket.min.css" %}>
+{% endblock %}
+
+{% block content %}
+<
+    <section class="big__container">
+        <h1 class="title">Корзина</h1>
+        <section class="busket">
+            <div class="busket__left">
+                <section class="busket-order">
+{#                    {{ cart.get_total_price }}#}
+                    <div class="busket-order__wrapper">
+                        <div class="busket-order__items">
+                            <div class="busket-order__item">
+                                {% for dish in cart %}
+                                <div class="busket-order__item-info">
+                                    <div class="busket-order__food">
+                                        <img src="{% static 'img/' %}{{ dish.product.picture }}" alt="food" class="busket-order__img">
+
+                                        <div class="busket-order__info">
+                                            <div class="busket-order__name">
+{#                                                Деталини с соусом из зеленого горошка с помидорами черри#}
+                                                {{ dish.product.title }}
+                                            </div>
+{#                                            <div class="busket-order__supplement">#}
+{#                                                Дополнительно пармезан#}
+{#                                            </div>#}
+                                        </div>
+                                    </div>
+
+                                    <div class="busket-order__cost">
+                                        <div class="busket-order__price">
+
+                                        </div>
+                                        <div class="busket-order__button">
+                                            <div class="button__counter">
+                                                <button class="button__minus" id="minus-to-cart-button" type="button" data-dish-id="{{ dish.product.pk }}"><img src={% static "icons/minus.svg" %} alt="minus"></button>
+                                                <div class="button__counter-number" >{{ dish.quantity }}</div>
+{#                                                    <input type="hidden" value="{{ dish.product.pk }}" id="dish-product-id">#}
+                                                <button class="button__plus" id="plus-to-cart-button" data-dish-id="{{ dish.product.pk }}" type="submit"><img src={% static "icons/plus.svg" %} alt="plus"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                <script>
+                                    const plusButtons = document.querySelectorAll('.button__plus');
+                                    const minusButtons = document.querySelectorAll('.button__minus');
+                                    plusButtons.forEach(function(button) {
+                                        button.addEventListener('click', () => {
+                                            {#console.log('hahhaa');#}
+                                            sendUpdateQuantityRequest('plus', button.dataset.dishId);
+                                        })
+                                    });
+                                    minusButtons.forEach(function(button) {
+                                        button.addEventListener('click', () => {
+                                            console.log('hihihi');
+                                            sendUpdateQuantityRequest('minus', button.dataset.dishId);
+                                        })
+                                    });
+
+
+
+                                    // Функция для отправки запроса на сервер
+                                    function sendUpdateQuantityRequest(value, dishId) {
+                                        const formData = new FormData();
+                                        formData.append('update_quantity', value);
+                                        formData.append('id', dishId);
+                                        {#const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;#}
+
+                                        const csrfToken = "{{ csrf_token }}";
+                                        {#console.log(csrfToken);#}
+
+                                      fetch('/cart/update/', {
+                                          method: 'POST',
+                                          body: formData,
+                                          headers: {
+                                              'X-CSRFToken': csrfToken
+                                          }
+                                      })
+                                      .then(response => {
+                                            if (response.ok) {
+                                                return response.json();
+                                            }
+                                            throw new Error('Network response was not ok');
+                                      })
+                                      .then(data => {
+                                            console.log(data);
+                                            location.reload();
+                                      })
+                                      .catch(error => {
+                                            console.error('Error:', error);
+                                      });
+                                    }
+                                    {#function sendUpdateQuantityRequest(value, dishId) {#}
+                                    {#    const formData = new FormData();#}
+                                    {#    formData.append('update_quantity', value);#}
+                                    {#    formData.append('id', dishId);#}
+                                    {##}
+                                    {#    fetch('/cart/', {#}
+                                    {#        method: 'POST',#}
+                                    {#        body: formData#}
+                                    {#    })#}
+                                    {#    .then(response => {#}
+                                    {#        if (response.ok) {#}
+                                    {#            return response.json();#}
+                                    {#        }#}
+                                    {#        throw new Error('Network response was not ok');#}
+                                    {#    })#}
+                                    {#    .then(data => {#}
+                                    {#        console.log(data);#}
+                                    {#    })#}
+                                    {#    .catch(error => {#}
+                                    {#        console.error('Error:', error);#}
+                                    {#    });#}
+
+                                </script>
+                                <div class="divider divider__bottom"></div>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </section>
+    
+                <section class="busket-adding">
+                    <div class="busket-adding__wrapper">
+                        <div class="busket-adding__title">
+                            <h2>Добавить к заказу</h2>
+                        </div>
+                        <div class="busket-adding__menu">
+                            <div class="busket-adding__content ">
+                                <div class="busket-adding__content-wrapper">
+                                    <div class="busket-adding__content-photo">
+                                        <img src={% static "img/detalini.svg" %} alt="snake"  class="busket-adding__content-img">
+                                        <div class="busket-adding__content-photo-back"></div>
+                                    </div>
+                                    <h2 class="busket-adding__content-title">
+                                        Деталини с соусом из зеленого горошка с помидорами черри
+                                    </h2>
+                                    <div class="busket-adding__content-buy">
+                                        <div class="busket-adding__content-cost">
+                                            <div class="busket-adding__content-price">
+                                                675 ₽
+                                            </div>
+                                        </div>
+                                        <button class="button button__mini">В корзину</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="busket-adding__content ">
+                                <div class="busket-adding__content-wrapper">
+                                    <div class="busket-adding__content-photo">
+                                        <img src={% static "img/detalini.svg" %} alt="snake"  class="busket-adding__content-img">
+                                        <div class="busket-adding__content-photo-back"></div>
+                                    </div>
+                                    <h2 class="busket-adding__content-title">
+                                        Деталини с соусом из зеленого горошка с помидорами черри
+                                    </h2>
+                                    <div class="busket-adding__content-buy">
+                                        <div class="busket-adding__content-cost">
+                                            <div class="busket-adding__content-price">
+                                                675 ₽
+                                            </div>
+                                        </div>
+                                        <button class="button button__mini">В корзину</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="busket-adding__content ">
+                                <div class="busket-adding__content-wrapper">
+                                    <div class="busket-adding__content-photo">
+                                        <img src={% static "img/detalini.svg" %} alt="snake"  class="busket-adding__content-img">
+                                        <div class="busket-adding__content-photo-back"></div>
+                                    </div>
+                                    <h2 class="busket-adding__content-title">
+                                        Деталини с соусом из зеленого горошка с помидорами черри
+                                    </h2>
+                                    <div class="busket-adding__content-buy">
+                                        <div class="busket-adding__content-cost">
+                                            <div class="busket-adding__content-price">
+                                                675 ₽
+                                            </div>
+                                        </div>
+                                        <button class="button button__mini">В корзину</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="busket-adding__content ">
+                                <div class="busket-adding__content-wrapper">
+                                    <div class="busket-adding__content-photo">
+                                        <img src={% static "img/detalini.svg" %} alt="snake"  class="busket-adding__content-img">
+                                        <div class="busket-adding__content-photo-back"></div>
+                                    </div>
+                                    <h2 class="busket-adding__content-title">
+                                        Деталини с соусом из зеленого горошка с помидорами черри
+                                    </h2>
+                                    <div class="busket-adding__content-buy">
+                                        <div class="busket-adding__content-cost">
+                                            <div class="busket-adding__content-price">
+                                                675 ₽
+                                            </div>
+                                        </div>
+                                        <button class="button button__mini">В корзину</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="busket__right">
+                <section class="busket-geoposition">
+                    <div class="busket-geoposition__wrapper">
+                        <div class="busket-geoposition__up">
+                            <div class="busket-geoposition__title">
+                                <h2>Доставка</h2>
+                            </div>
+                            <button class="button__clear">Изменить</button>
+                        </div>
+                        <div class="busket-geoposition__local">
+                            г Москва, Покровский б-р, д 11
+                        </div>
+                    </div>
+    
+                </section>
+    
+                <section class="busket-result">
+                    <div class="busket-result__wrapper">
+                        <div class="busket-result__title">
+                            <h2>Ваш заказ</h2>
+                        </div>
+                        <div class="busket-result__promo">
+                            <input type="text" placeholder="Введите промокод: STANIS" class="busket-result__input">
+                            <button class="button">Добавить</button>
+                        </div>
+                        <div class="divider divider__bottom"></div>
+                            <div class="busket-result__category">
+                                <div class="busket-result__text">Корзина</div>
+                                <div class="busket-result__price">1200 ₽</div>
+                            </div>
+                            <div class="busket-result__category">
+                                <div class="busket-result__text">Сумма скидки</div>
+                                <div class="busket-result__price">200 ₽</div>
+                            </div>
+                        <div class="divider divider__bottom"></div>
+                        <div class="busket-result__cost">
+                            <div class="busket-result__end">Итого</div>
+                            <div class="busket-result__summ">1000 ₽</div>
+                        </div>
+                        <button class="button button__big">Оформить заказ</button>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </section>
+    
+
+
+
+{% endblock %}
+
+{% block js %}
+    <script src={% static  "js/script.js" %}></script>
+{% endblock %}

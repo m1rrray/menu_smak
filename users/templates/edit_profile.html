@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Личный кабинет{% endblock %}
+
+{% block css_additional %}
+    <link rel="stylesheet" href={% static "css/login.min.css" %}>
+{% endblock %}
+
+{% block content %}
+    <section class="login">
+        <div class="container">
+            <div class="login__menu">
+                <div class="login__wrapper">
+                    <div class="login__enter-reg">
+                        <div class="login__enter  left">
+
+                            <div class="login__title">
+                                <h2>Редактирование профиля</h2>
+                            </div>
+
+                            <form method="post" class="login__form">
+                                {% csrf_token %}
+                                <div class="input login__input">
+                                    {{ form.username }}
+                                    <label class="label">Имя пользователя</label>
+                                </div>
+                                <div class="input login__input">
+                                    {{ form.fullname }}
+                                    <label class="label">ФИО</label>
+
+                                </div>
+                                <div class="input login__input">
+                                    {{ form.phone }}
+                                    <label class="label">ФИО</label>
+
+                                </div>
+                                <div class="input login__input">
+                                    {{ form.email }}
+                                    <label class="label">ФИО</label>
+
+                                </div>
+
+
+                                <div class="login__button">
+                                    <button class="button button__big button__dark" type="submit">
+                                        Редактировать
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

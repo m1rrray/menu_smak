@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css_additional %}
+    <link rel="stylesheet" href={% static "css/login.min.css" %}>
+{% endblock %}
+
+{% block content %}
+    <section class="login">
+        <div class="container">
+            <div class="login__menu">
+                <div class="login__wrapper">
+                    <div class="login__enter-reg">
+                        <div class="login__enter  left">
+
+                            <div class="login__title">
+                                <h2>Добавление нового адреса</h2>
+                            </div>
+
+                            <form method="post" class="login__form">
+                                {% csrf_token %}
+                                <div class="input login__input">
+                                    {{ form.street }}
+                                    <label class="label">Улица и номер дома</label>
+                                </div>
+                                <div class="input login__input">
+                                    {{ form.apartment_number }}
+                                    <label class="label">Номер квартиры</label>
+
+                                </div>
+
+
+                                <div class="login__button">
+                                    <button class="button button__big button__dark" type="submit">
+                                        Добавить
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

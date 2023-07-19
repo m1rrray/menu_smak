@@ -122,6 +122,38 @@ window.addEventListener ('DOMContentLoaded', () => {
         }
     })
 
+    var addButtons = document.querySelectorAll('.button');
+
+    // Добавляем обработчик события клика для каждой кнопки
+    addButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        // Получаем информацию о блюде из атрибутов data-*
+          var dishPicture = button.dataset.dishPicture;
+        var dishId = button.dataset.dishId;
+        var dishName = button.dataset.dishName;
+        var dishDescription = button.dataset.dishDescription;
+        var dishPrice = button.dataset.dishPrice;
+        var dishWeight = button.dataset.dishWeight;
+        var dishCategory = button.dataset.dishCategory;
+
+
+
+        // Отображаем информацию о блюде в модальном окне
+        document.querySelector('#product_id').value = dishId;
+        document.querySelector('#my-modal__img-food').src = '/static/img/' + dishPicture;
+        document.querySelector('.modal .modal__title').textContent = dishName;
+        document.querySelector('.modal .modal__text').textContent = dishDescription;
+        document.querySelector('.modal .modal__img-price').textContent = dishPrice + ' ₽';
+        if (dishCategory == 'drink')
+            document.querySelector('.modal .modal__img-grams').textContent = dishWeight + 'мл' ;
+        else
+            document.querySelector('.modal .modal__img-grams').textContent = dishWeight + ' г' ;
+
+
+        // Открываем модальное окно
+        // document.querySelector('.modal').classList.add('show');
+      });
+    })
 
     // Modal
 
@@ -135,6 +167,7 @@ window.addEventListener ('DOMContentLoaded', () => {
                     modal.classList.remove('hide');
                     modal.classList.add('fade');
                     // number.innerHTML = counter;
+
                 }
             });
         });
@@ -165,6 +198,17 @@ window.addEventListener ('DOMContentLoaded', () => {
         }
     }); // закрыти на нажатие вне окна
 
+    const formbutton = document.querySelector('#add-to-cart-button')
+
+    formbutton.addEventListener('click', (e) => {
+
+        // location.reload();
+        closeModal();
+        // location.reload();
+
+
+
+    })
 
 
     closeModal();
@@ -175,38 +219,7 @@ window.addEventListener ('DOMContentLoaded', () => {
 
 
 
-    var addButtons = document.querySelectorAll('.button');
 
-    // Добавляем обработчик события клика для каждой кнопки
-    addButtons.forEach(function(button) {
-      button.addEventListener('click', function() {
-        // Получаем информацию о блюде из атрибутов data-*
-          var dishPicture = button.dataset.dishPicture;
-        var dishId = button.dataset.dishId;
-        var dishName = button.dataset.dishName;
-        var dishDescription = button.dataset.dishDescription;
-        var dishPrice = button.dataset.dishPrice;
-        var dishWeight = button.dataset.dishWeight;
-        var dishCategory = button.dataset.dishCategory;
-
-
-
-        // Отображаем информацию о блюде в модальном окне
-
-          document.querySelector('#my-modal__img-food').src = '/static/img/' + dishPicture;
-        document.querySelector('.modal .modal__title').textContent = dishName;
-        document.querySelector('.modal .modal__text').textContent = dishDescription;
-        document.querySelector('.modal .modal__img-price').textContent = dishPrice + ' ₽';
-        if (dishCategory == 'drink')
-            document.querySelector('.modal .modal__img-grams').textContent = dishWeight + 'мл' ;
-        else
-            document.querySelector('.modal .modal__img-grams').textContent = dishWeight + ' г' ;
-        document.querySelector('#product_id').value = dishId;
-
-        // Открываем модальное окно
-        // document.querySelector('.modal').classList.add('show');
-      });
-    });
 
 
 

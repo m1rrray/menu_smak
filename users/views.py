@@ -1,10 +1,12 @@
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
-from django.shortcuts import render, get_object_or_404
-from django.views.generic import CreateView, DetailView
-from django.urls import reverse_lazy
-from .forms import CreationForm, LoginUserForm
-from .models import NewUser
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
+from django.urls import reverse_lazy, reverse
+from .forms import CreationForm, LoginUserForm, AddressForm, UserProfileForm
+from .models import NewUser, Address
 
 
 class SignUp(CreateView):
@@ -23,10 +25,74 @@ class UserProfileView(DetailView):
     model = NewUser
     context_object_name = 'user'
 
-    def get_context_data(self, *args, **kwargs):
-        users = NewUser.objects.all()
-        context = super(UserProfileView, self).get_context_data(*args, **kwargs)
-        page_user = get_object_or_404(NewUser, id=self.kwargs['pk'])
-        context['page_user'] = page_user
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.get_object()  # получаем текущего пользователя
+        context['addresses'] = user.addresses.all()  # получаем все адреса текущего пользователя
+
         return context
+
+
+def add_address(request, pk):
+    user = NewUser.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            address = Address(**form.cleaned_data)
+            address.user = user
+            address.save()
+            user.addresses.add(address)
+            user.save()
+            return redirect('profile', pk=pk)
+    else:
+        form = AddressForm()
+    form = AddressForm()
+
+    return render(request, 'add_address.html', {'form': form})
+
+
+@login_required
+def edit_profile(request, pk):
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile', pk=pk)
+    else:
+        form = UserProfileForm(instance=request.user)
+    return render(request, 'edit_profile.html', {'form': form})
+
+
+# class AddressDeleteView(DeleteView):
+#     model = Address
+#     template_name = 'address_edit.html'
+#     success_url = reverse_lazy('index')
+#
+#     def get_queryset(self):
+#         qs = super().get_queryset()
+#         return qs.filter(user=self.request.user)
+
+@login_required
+def addresses(request, pk):
+    user = NewUser.objects.get(pk=pk)
+    context = {
+        'addresses': user.addresses.all(),
+        'user': user,
+    }
+    return render(request, 'address_edit.html', context)
+
+
+def delete_address(request):
+    # Получаем объект адреса или 404, если адрес не существует
+    # address = Address.objects.get()
+    # address.delete()
+    return redirect('index.html')
+    # return render(request, 'index.html', {})
+def delete_address(request, pk):
+    address = get_object_or_404(Address, pk=pk, user=request.user)
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('index')
 
