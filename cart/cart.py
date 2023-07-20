@@ -99,26 +99,27 @@ class Cart(object):
         return total_price
 
     def get_total_price_with_prom(self):
+        """
+        Подсчет стоимости товаров в корзине после применения промокода.
+        """
 
         total_price = self.get_total_price()
 
         discount = 0
         if self.promocode:
-            print('lalallalalalalallala')
-            print(self.promocode)
             try:
                 promocode_object = Promotions.objects.get(promocode=self.promocode)
                 discount = promocode_object.discount
-            except Promotions.DoesNotExist as e:
-                print(e)
-                # pass
+            except Promotions.DoesNotExist:
+                pass
 
         total_price = round(total_price * (1 - discount / 100))
-        print(total_price)
         return total_price
 
     def clear(self):
-        # удаление корзины из сессии
+        """
+        Удаление корзины из сессии.
+        """
         del self.session[settings.CART_SESSION_ID]
         self.session.modified = True
 

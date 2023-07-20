@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from .forms import CreationForm, LoginUserForm, AddressForm, UserProfileForm
-from .models import NewUser, Address
+from .models import User, Address
 
 
 class SignUp(CreateView):
@@ -17,12 +17,13 @@ class SignUp(CreateView):
 
 class LoginUser(LoginView):
     form_class = LoginUserForm
+    print(form_class)
     template_name = 'registration/login.html'
 
 
 class UserProfileView(DetailView):
     template_name = 'profile.html'
-    model = NewUser
+    model = User
     context_object_name = 'user'
 
     def get_context_data(self, **kwargs):
@@ -34,7 +35,7 @@ class UserProfileView(DetailView):
 
 
 def add_address(request, pk):
-    user = NewUser.objects.get(pk=pk)
+    user = User.objects.get(pk=pk)
     if request.method == 'POST':
         form = AddressForm(request.POST)
         if form.is_valid():
@@ -66,7 +67,7 @@ def edit_profile(request, pk):
 
 @login_required
 def addresses(request, pk):
-    user = NewUser.objects.get(pk=pk)
+    user = User.objects.get(pk=pk)
     context = {
         'addresses': user.addresses.all(),
         'user': user,
@@ -80,6 +81,7 @@ def delete_address(request):
     # address.delete()
     return redirect('index.html')
     # return render(request, 'index.html', {})
+
 def delete_address(request, pk):
     address = get_object_or_404(Address, pk=pk, user=request.user)
 

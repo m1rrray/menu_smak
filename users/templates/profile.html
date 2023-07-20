@@ -18,21 +18,14 @@
                         </button>
                     </div>
                     <div class="profile__name">
-                        <h2>{{ user.fullname }}</h2>
+                        <h2>{{ user.first_name }} {{ user.last_name }}</h2>
                     </div>
                     <div class="profile__contacts">
-                        <div class="profile__email">
-                            Имя пользователя:
-                            {{ user.username }}
-                        </div>
                         <div class="profile__phone">
                             <img src={% static "icons/phone.svg" %} alt="phone">
                             {{ user.phone }}
                         </div>
-                        <div class="profile__email">
-                            <img src={% static "icons/email.svg" %} alt="email">
-                            {{ user.email }}
-                        </div>
+
                     </div>
                     <div class="profile__exit">
                         <a href={% url 'logout' %}><button class="button__clear" >Выйти из аккаунта</button></a>

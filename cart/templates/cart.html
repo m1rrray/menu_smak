@@ -207,8 +207,6 @@
                         <div class="busket-result__promo">
                             <form method="POST" >
                                 {% csrf_token %}
-
-{#                                <input type="text" placeholder="Введите промокод: STANIS" class="busket-result__input">#}
                                 {{ form.promocode }}
                                 <button class="button" type="submit">Добавить</button>
                             </form>

@@ -23,8 +23,8 @@
                                 <div>{{ form.non_field_errors }}</div>
                                 <div class="input login__input">
 {#                                    <input type="text" name="name"   class="input__text" required>#}
-                                    {{ form.username }}
-                                    <label class="label">username</label>
+                                    {{ form.phone }}
+                                    <label class="label">Номер телефона</label>
                                 </div>
                                 <div class="input login__input">
 {#                                    <input type="password" id="password__enter" name="password"  class="input__text" required>#}
@@ -33,18 +33,8 @@
                                     <img  data-hide src={% static "icons/open_eye.svg" %} alt="eye" class="open__eye fade hide">
                                     <img  data-show src={% static "icons/close_eye.svg" %} alt="eye" class="close__eye fade">
                                 </div>
+{#                                {{ form.as_p }}#}
 
-{#                                {% for f in form %}#}
-{#                                    <div class="input login__input">#}
-{#                                        {% if f.field != 'email' %}#}
-{#                                            {{ f }}#}
-{#                                            {{ f.errors }}#}
-{#                                        {% endif %}#}
-{#                                    </div>#}
-{#                                {% endfor %}#}
-{#                                <div class="login__forget">#}
-{#                                    <button data-forget class="button__clear" type="button">Забыли пароль?</button>#}
-{#                                </div>#}
                                 <div class="login__button">
                                     <button class="button button__big button__dark" type="submit">
                                         Войти
