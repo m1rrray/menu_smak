@@ -30,7 +30,7 @@ urlpatterns = [
     path('profile/<int:pk>/add_address/', add_address, name='add_address'),
     path('profile/<int:pk>/edit_profile/', edit_profile, name='edit_profile'),
     path('profile/<int:pk>/edit_addresses/', addresses, name='edit_address'),
-    path('profile/<int:pk>/delete_address/', delete_address, name='delete_address'),
+    path('profile/delete_address/<int:pk>/', delete_address, name='delete_address'),
     path('logout/', logout_view, name='logout'),
     path("", include("posts.urls")),
 

@@ -19,7 +19,7 @@ class Cart(object):
             # save an empty cart in the session
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
-        print(cart)
+        # print(cart)
 
     def add(self, product_id, quantity=1, update_quantity=False, operation=''):
         """
@@ -38,7 +38,7 @@ class Cart(object):
                 # print(self.cart)
 
         elif update_quantity and operation == 'minus':
-            print('hui')
+            # print('hui')
             if self.cart[str(product_id)]['quantity'] > 0:
                 self.cart[str(product_id)]['quantity'] -= 1
             if self.cart[str(product_id)]['quantity'] == 0:
@@ -134,3 +134,19 @@ class Cart(object):
         Получить сумму скидки.
         """
         return self.get_total_price() - self.get_total_price_with_prom()
+
+    def get_cart_items(self):
+        """
+        Возвращает словарь с содержимым корзины.
+        """
+        cart_items = {}
+        for product_id, item in self.cart.items():
+            quantity = item['quantity']
+            price = item['price']
+
+            cart_items[product_id] = {
+                'quantity': quantity,
+                'price': price,
+            }
+        print(cart_items)
+        return cart_items

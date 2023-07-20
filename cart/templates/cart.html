@@ -102,86 +102,58 @@
                             <h2>Добавить к заказу</h2>
                         </div>
                         <div class="busket-adding__menu">
+                            {% for post in random_posts %}
                             <div class="busket-adding__content ">
                                 <div class="busket-adding__content-wrapper">
                                     <div class="busket-adding__content-photo">
-                                        <img src={% static "img/detalini.svg" %} alt="snake"  class="busket-adding__content-img">
+                                        <img src={% static 'img/' %}{{ post.picture }} alt="snake"  class="busket-adding__content-img">
                                         <div class="busket-adding__content-photo-back"></div>
                                     </div>
                                     <h2 class="busket-adding__content-title">
-                                        Деталини с соусом из зеленого горошка с помидорами черри
+                                        {{ post.title }}
                                     </h2>
                                     <div class="busket-adding__content-buy">
                                         <div class="busket-adding__content-cost">
                                             <div class="busket-adding__content-price">
-                                                675 ₽
+                                                {{ post.price }} ₽
                                             </div>
                                         </div>
-                                        <button class="button button__mini">В корзину</button>
+                                        <button class="button button__mini" onclick="addToCart({{ post.id }})">В корзину</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="busket-adding__content ">
-                                <div class="busket-adding__content-wrapper">
-                                    <div class="busket-adding__content-photo">
-                                        <img src={% static "img/detalini.svg" %} alt="snake"  class="busket-adding__content-img">
-                                        <div class="busket-adding__content-photo-back"></div>
-                                    </div>
-                                    <h2 class="busket-adding__content-title">
-                                        Деталини с соусом из зеленого горошка с помидорами черри
-                                    </h2>
-                                    <div class="busket-adding__content-buy">
-                                        <div class="busket-adding__content-cost">
-                                            <div class="busket-adding__content-price">
-                                                675 ₽
-                                            </div>
-                                        </div>
-                                        <button class="button button__mini">В корзину</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="busket-adding__content ">
-                                <div class="busket-adding__content-wrapper">
-                                    <div class="busket-adding__content-photo">
-                                        <img src={% static "img/detalini.svg" %} alt="snake"  class="busket-adding__content-img">
-                                        <div class="busket-adding__content-photo-back"></div>
-                                    </div>
-                                    <h2 class="busket-adding__content-title">
-                                        Деталини с соусом из зеленого горошка с помидорами черри
-                                    </h2>
-                                    <div class="busket-adding__content-buy">
-                                        <div class="busket-adding__content-cost">
-                                            <div class="busket-adding__content-price">
-                                                675 ₽
-                                            </div>
-                                        </div>
-                                        <button class="button button__mini">В корзину</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="busket-adding__content ">
-                                <div class="busket-adding__content-wrapper">
-                                    <div class="busket-adding__content-photo">
-                                        <img src={% static "img/detalini.svg" %} alt="snake"  class="busket-adding__content-img">
-                                        <div class="busket-adding__content-photo-back"></div>
-                                    </div>
-                                    <h2 class="busket-adding__content-title">
-                                        Деталини с соусом из зеленого горошка с помидорами черри
-                                    </h2>
-                                    <div class="busket-adding__content-buy">
-                                        <div class="busket-adding__content-cost">
-                                            <div class="busket-adding__content-price">
-                                                675 ₽
-                                            </div>
-                                        </div>
-                                        <button class="button button__mini">В корзину</button>
-                                    </div>
-                                </div>
-                            </div>
+                            {% endfor %}
+
+
                         </div>
                     </div>
                 </section>
             </div>
+            <script>
+              function addToCart(postId) {
+                const quantity = 1;
+                const csrfToken = "{{ csrf_token }}";
+                fetch('/cart/add/', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrfToken,
+                  },
+                  body: `product_id=${postId}&quantity=${quantity}`,
+                })
+                  .then(response => response.text())
+                  .then(data => {
+                    // Здесь можно обработать ответ от сервера, например, обновить состояние корзины на странице.
+                    console.log(data);
+                    location.reload();
+                  })
+                  .catch(error => {
+                    console.error('Ошибка при обращении к серверу:', error);
+                  });
+              }
+
+
+            </script>
 
             <div class="busket__right">
                 <section class="busket-geoposition">
@@ -190,15 +162,39 @@
                             <div class="busket-geoposition__title">
                                 <h2>Доставка</h2>
                             </div>
-                            <button class="button__clear">Изменить</button>
+{#                            <button class="button__clear">Изменить</button>#}
                         </div>
+
                         <div class="busket-geoposition__local">
-                            г Москва, Покровский б-р, д 11
+                            {{ last_address }}
                         </div>
                     </div>
     
                 </section>
-    
+                <script>
+                    function CreateOrder() {
+                        const csrfToken = "{{ csrf_token }}";
+                        const cartData = JSON.stringify({{ cart.get_cart_items|safe }});
+                        console.log('idi naxui')
+                        fetch('/cart/create_order/', {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-CSRFToken': csrfToken,
+                          },
+                          body: cartData,
+                        })
+                          .then(response => response.text())
+                          .then(data => {
+                            // Здесь можно обработать ответ от сервера, например, обновить состояние корзины на странице.
+                            {#console.log(data);#}
+                            location.reload();
+                          })
+                          .catch(error => {
+                            console.error('Ошибка при обращении к серверу:', error);
+                          });
+                      }
+                </script>
                 <section class="busket-result">
                     <div class="busket-result__wrapper">
                         <div class="busket-result__title">
@@ -226,9 +222,10 @@
                             <div class="busket-result__end">Итого</div>
                             <div class="busket-result__summ">{{ cart.get_total_price_with_prom }} ₽</div>
                         </div>
-                        <button class="button button__big">Оформить заказ</button>
+                        <button class="button button__big" onclick=CreateOrder()>Оформить заказ</button>
                     </div>
                 </section>
+{#                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>#}
             </div>
         </section>
     </section>

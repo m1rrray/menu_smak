@@ -22,7 +22,7 @@
                             <div class="profile__contacts">
                             {% for address in addresses %}
                                 <div class="profile__phone">
-                                    {{ address }} <a class="button__clear" href=''>Удалить</a>
+                                    {{ address }} <a class="button__clear" href={% url "delete_address" pk=address.id %}>Удалить</a>
                                 </div>
                             {% endfor %}
                             </div>

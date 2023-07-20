@@ -1,12 +1,15 @@
 from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, get_object_or_404, redirect
+from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from .forms import CreationForm, LoginUserForm, AddressForm, UserProfileForm
-from .models import User, Address
+from .models import User, Address, Order
 
 
 class SignUp(CreateView):
@@ -21,17 +24,42 @@ class LoginUser(LoginView):
     template_name = 'registration/login.html'
 
 
+def is_own_profile(user, pk):
+    return user.is_authenticated and user.pk == pk
+
+
 class UserProfileView(DetailView):
+    # permission_required = 'user.show_profile'
     template_name = 'profile.html'
     model = User
     context_object_name = 'user'
 
+    def dispatch(self, request, *args, **kwargs):
+        # Проверка доступа перед выполнением view
+        if not is_own_profile(request.user, kwargs['pk']):
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(User, pk=self.kwargs['pk'])
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user = self.get_object()  # получаем текущего пользователя
-        context['addresses'] = user.addresses.all()  # получаем все адреса текущего пользователя
+        user = self.get_object()
+        context['addresses'] = user.addresses.all()
+
+        # Получение заказов пользователя и добавление их в контекст
+        orders = Order.objects.filter(user=user).order_by('-order_date')
+        context['orders'] = orders
 
         return context
+
+    def handle_no_permission(self):
+        # Обработка ошибки отсутствия доступа
+        raise PermissionDenied("У вас нет доступа к этому профилю.")
+
+
+
 
 
 def add_address(request, pk):
@@ -64,7 +92,6 @@ def edit_profile(request, pk):
     return render(request, 'edit_profile.html', {'form': form})
 
 
-
 @login_required
 def addresses(request, pk):
     user = User.objects.get(pk=pk)
@@ -75,18 +102,14 @@ def addresses(request, pk):
     return render(request, 'address_edit.html', context)
 
 
-def delete_address(request):
-    # Получаем объект адреса или 404, если адрес не существует
-    # address = Address.objects.get()
-    # address.delete()
-    return redirect('index.html')
-    # return render(request, 'index.html', {})
-
 def delete_address(request, pk):
-    address = get_object_or_404(Address, pk=pk, user=request.user)
+    address = get_object_or_404(Address, id=pk)
+    # Проверяем, чтобы пользователь мог удалять только свои адреса
+    if address.user == request.user:
+        address.delete()
+    return redirect('profile', pk=request.user.pk)
 
 
 def logout_view(request):
     logout(request)
     return redirect('index')
-

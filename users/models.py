@@ -1,8 +1,11 @@
+from django.utils import timezone
+
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from posts.models import Post
 from users.usermanager import UserManager
 
 
@@ -18,11 +21,24 @@ class Address(models.Model):
             return f"{self.street}"
 
 
-# class NewUser(AbstractUser):
-#     username = models.CharField(max_length=100, unique=True)
-#     fullname = models.CharField(max_length=100)
-#     phone = models.CharField(max_length=100)
-#     addresses = models.ManyToManyField(Address, blank=True, related_name='user_addresses')
+class Order(models.Model):
+    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='user_orders')
+    order_date = models.DateTimeField(default=timezone.now)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    items = models.ManyToManyField("OrderItem", blank=True, related_name='order_items')
+
+    def __str__(self):
+        return f"Order #{self.pk} by {self.user.first_name} {self.user.last_name}"
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='orders_items')
+    product = models.ForeignKey(Post, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"Item {self.pk} - {self.product.title} ({self.quantity} pcs)"
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -30,6 +46,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField( max_length=30, blank=True)
     phone = models.CharField(max_length=50, unique=True)
     addresses = models.ManyToManyField(Address, blank=True, related_name='user_addresses')
+    orders = models.ManyToManyField(Order, blank=True, related_name='user_orders')
     is_staff = models.BooleanField(
         _("staff status"),
         default=False,
@@ -58,6 +75,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         Returns the short name for the user.
         '''
         return self.first_name
+
+
+
 
 
 
