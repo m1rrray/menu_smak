@@ -63,14 +63,6 @@ def edit_profile(request, pk):
     return render(request, 'edit_profile.html', {'form': form})
 
 
-# class AddressDeleteView(DeleteView):
-#     model = Address
-#     template_name = 'address_edit.html'
-#     success_url = reverse_lazy('index')
-#
-#     def get_queryset(self):
-#         qs = super().get_queryset()
-#         return qs.filter(user=self.request.user)
 
 @login_required
 def addresses(request, pk):

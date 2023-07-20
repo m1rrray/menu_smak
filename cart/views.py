@@ -4,18 +4,32 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from cart.cart import Cart
-from cart.forms import AddNewProductCart
+from cart.forms import AddNewProductCart, UsePromotion
 from posts.models import Post
 
+
+# def apply_promotion(request):
+#     if request.method == 'POST':
+#         form = UsePromotion(request.POST)
+#         if form.is_valid():
+#             promocode = form.cleaned_data['promocode']
+#             # Здесь вы можете использовать полученный промокод и выполнить нужные действия
+#             # например, применить скидку к корзине или проверить его наличие в базе данных
+#
+#             # После выполнения нужных действий, вы можете вернуться на страницу корзины
+#             return redirect('cart_detail')
+#     else:
+#         form = UsePromotion()
+#
+#     return render(request, 'cart.html', {'form': form})
 
 @csrf_exempt
 @require_POST
 def update_cart(request):
     cart = Cart(request)
-    # print('sdfsdf')
     update_type = request.POST.get('update_quantity')
     product_id = request.POST.get('id')
-    print(update_type, product_id)
+    # print(update_type, product_id)
 
     if update_type == 'plus':
         cart.add(int(product_id), quantity=1, update_quantity=True, operation=update_type)
@@ -44,9 +58,14 @@ def cart_add(request):
         cart.add(int(product_id), quantity=quantity)
         return redirect('cart_detail')
 
-        # cart.add()
-
 
 def cart_detail(request):
     cart = Cart(request)
-    return render(request, 'cart.html', {'cart': cart})
+    form = UsePromotion(request.POST or None)  # Создаем форму и передаем в нее данные из POST запроса
+    if request.method == 'POST' and form.is_valid():
+        promocode = form.cleaned_data['promocode']
+        print(promocode)
+        # print(cart.set_promocode())
+        cart.set_promocode(promocode)  # Применяем промокод к корзине
+    return render(request, 'cart.html', {'cart': cart, 'form': form})
+
