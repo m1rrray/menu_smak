@@ -59,9 +59,6 @@ class UserProfileView(DetailView):
         raise PermissionDenied("У вас нет доступа к этому профилю.")
 
 
-
-
-
 def add_address(request, pk):
     user = User.objects.get(pk=pk)
     if request.method == 'POST':

@@ -114,6 +114,7 @@ class Cart(object):
                 pass
 
         total_price = round(total_price * (1 - discount / 100))
+        # self.save()
         return total_price
 
     def clear(self):

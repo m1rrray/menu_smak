@@ -63,7 +63,10 @@ def cart_add(request):
 @csrf_exempt
 def place_order(request):
     cart = Cart(request)
-
+    form = UsePromotion(request.POST)
+    if form.is_valid():
+        promocode = form.cleaned_data['promocode']
+        cart.set_promocode(promocode)
 
     # Создание заказа
     order = Order.objects.create(user=request.user, total_price=cart.get_total_price_with_prom())
