@@ -143,8 +143,6 @@
                 })
                   .then(response => response.text())
                   .then(data => {
-                    // Здесь можно обработать ответ от сервера, например, обновить состояние корзины на странице.
-                    console.log(data);
                     location.reload();
                   })
                   .catch(error => {
@@ -162,11 +160,14 @@
                             <div class="busket-geoposition__title">
                                 <h2>Доставка</h2>
                             </div>
-{#                            <button class="button__clear">Изменить</button>#}
                         </div>
 
                         <div class="busket-geoposition__local">
-                            {{ last_address }}
+                            {% if last_address %}
+                                {{ last_address }}
+                            {% else %}
+                                Сначала нужно добавить адрес через профиль
+                            {% endif %}
                         </div>
                     </div>
     
@@ -174,20 +175,24 @@
                 <script>
                     function CreateOrder() {
                         const csrfToken = "{{ csrf_token }}";
+                        const cartPrice = {{ cart.get_total_price_with_prom }};
                         const cartData = JSON.stringify({{ cart.get_cart_items|safe }});
-                        console.log('idi naxui')
+
+                        const requestBody = {
+                            cartData: cartData,
+                            cartPrice: cartPrice
+                        };
+
                         fetch('/cart/create_order/', {
                           method: 'POST',
                           headers: {
                             'Content-Type': 'application/x-www-form-urlencoded',
                             'X-CSRFToken': csrfToken,
                           },
-                          body: cartData,
+                          body: JSON.stringify(requestBody)
                         })
                           .then(response => response.text())
                           .then(data => {
-                            // Здесь можно обработать ответ от сервера, например, обновить состояние корзины на странице.
-                            {#console.log(data);#}
                             location.reload();
                           })
                           .catch(error => {
@@ -225,7 +230,6 @@
                         <button class="button button__big" onclick=CreateOrder()>Оформить заказ</button>
                     </div>
                 </section>
-{#                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>#}
             </div>
         </section>
     </section>

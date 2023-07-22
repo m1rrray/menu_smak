@@ -1,26 +1,23 @@
 from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, get_object_or_404, redirect
-from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
-from django.urls import reverse_lazy, reverse
+from django.views.generic import CreateView, DetailView
+from django.urls import reverse_lazy
+
 from .forms import CreationForm, LoginUserForm, AddressForm, UserProfileForm
 from .models import User, Address, Order
 
 
 class SignUp(CreateView):
     form_class = CreationForm
-    success_url = reverse_lazy('login')  # где login — это параметр "name" в path()
+    success_url = reverse_lazy('login')
     template_name = "registration/register.html"
 
 
 class LoginUser(LoginView):
     form_class = LoginUserForm
-    print(form_class)
     template_name = 'registration/login.html'
 
 
@@ -29,7 +26,6 @@ def is_own_profile(user, pk):
 
 
 class UserProfileView(DetailView):
-    # permission_required = 'user.show_profile'
     template_name = 'profile.html'
     model = User
     context_object_name = 'user'
@@ -59,9 +55,6 @@ class UserProfileView(DetailView):
         raise PermissionDenied("У вас нет доступа к этому профилю.")
 
 
-
-
-
 def add_address(request, pk):
     user = User.objects.get(pk=pk)
     if request.method == 'POST':
@@ -73,8 +66,7 @@ def add_address(request, pk):
             user.addresses.add(address)
             user.save()
             return redirect('profile', pk=pk)
-    else:
-        form = AddressForm()
+
     form = AddressForm()
 
     return render(request, 'add_address.html', {'form': form})
@@ -89,6 +81,7 @@ def edit_profile(request, pk):
             return redirect('profile', pk=pk)
     else:
         form = UserProfileForm(instance=request.user)
+
     return render(request, 'edit_profile.html', {'form': form})
 
 
@@ -99,6 +92,7 @@ def addresses(request, pk):
         'addresses': user.addresses.all(),
         'user': user,
     }
+
     return render(request, 'address_edit.html', context)
 
 
@@ -107,6 +101,7 @@ def delete_address(request, pk):
     # Проверяем, чтобы пользователь мог удалять только свои адреса
     if address.user == request.user:
         address.delete()
+
     return redirect('profile', pk=request.user.pk)
 
 

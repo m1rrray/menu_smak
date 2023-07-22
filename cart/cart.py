@@ -1,8 +1,5 @@
-from decimal import Decimal
 from django.conf import settings
-
 from cart.models import Promotions
-# from cart.views import get_post
 from posts.models import Post
 
 
@@ -12,6 +9,7 @@ class Cart(object):
         """
         Инициализируем корзину
         """
+
         self.promocode = None
         self.session = request.session
         cart = self.session.get(settings.CART_SESSION_ID)
@@ -19,12 +17,12 @@ class Cart(object):
             # save an empty cart in the session
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
-        # print(cart)
 
     def add(self, product_id, quantity=1, update_quantity=False, operation=''):
         """
         Добавить продукт в корзину или обновить его количество.
         """
+
         product = Post.objects.get(pk=product_id)
 
         if self.cart.get(str(product_id)) is None:
@@ -32,19 +30,16 @@ class Cart(object):
                                           'price': str(product.price)}
 
         elif update_quantity and operation == 'plus':
-            # print('hey')
             if self.cart[str(product_id)]['quantity'] < 15:
                 self.cart[str(product_id)]['quantity'] += 1
-                # print(self.cart)
 
         elif update_quantity and operation == 'minus':
-            # print('hui')
             if self.cart[str(product_id)]['quantity'] > 0:
                 self.cart[str(product_id)]['quantity'] -= 1
             if self.cart[str(product_id)]['quantity'] == 0:
                 del self.cart[str(product_id)]
         else:
-            print('sdfsdfsdfsdf')
+            print('WARNING')
         self.save()
 
     def save(self):
@@ -57,6 +52,7 @@ class Cart(object):
         """
         Удаление товара из корзины.
         """
+
         product_id = str(product.id)
         if product_id in self.cart:
             del self.cart[product_id]
@@ -75,11 +71,7 @@ class Cart(object):
             self.cart[str(product.id)]['product'] = product
 
         for item in self.cart.values():
-            # item['price'] = Decimal(item['price'])
-
             item['total_price'] = int(item['price']) * int(item['quantity'])
-            # print(item)
-            # item['picture'] = item['product'].picture
             yield item
 
     def __len__(self):
@@ -88,7 +80,6 @@ class Cart(object):
         """
 
         return sum(item['quantity'] for item in self.cart.values())
-        # pass
 
     def get_total_price(self):
         """
@@ -127,18 +118,21 @@ class Cart(object):
         """
         Установить промокод для корзины.
         """
+
         self.promocode = promocode
 
     def get_discount_amount(self):
         """
         Получить сумму скидки.
         """
+
         return self.get_total_price() - self.get_total_price_with_prom()
 
     def get_cart_items(self):
         """
         Возвращает словарь с содержимым корзины.
         """
+
         cart_items = {}
         for product_id, item in self.cart.items():
             quantity = item['quantity']
@@ -148,5 +142,5 @@ class Cart(object):
                 'quantity': quantity,
                 'price': price,
             }
-        print(cart_items)
+
         return cart_items

@@ -20,17 +20,11 @@ from users.views import SignUp, LoginUser, UserProfileView, logout_view, add_add
     addresses, delete_address
 
 urlpatterns = [
-    # path("auth/", include("users.urls")),
-    # path("auth/", include("django.contrib.auth.urls")),
     path('admin/', admin.site.urls),
     path('login/', LoginUser.as_view(), name='login'),
     path('register/', SignUp.as_view(), name='register'),
     path('cart/', include('cart.urls')),
-    path('profile/<int:pk>/', UserProfileView.as_view(), name='profile'),
-    path('profile/<int:pk>/add_address/', add_address, name='add_address'),
-    path('profile/<int:pk>/edit_profile/', edit_profile, name='edit_profile'),
-    path('profile/<int:pk>/edit_addresses/', addresses, name='edit_address'),
-    path('profile/delete_address/<int:pk>/', delete_address, name='delete_address'),
+    path('profile/', include('users.urls')),
     path('logout/', logout_view, name='logout'),
     path("", include("posts.urls")),
 
