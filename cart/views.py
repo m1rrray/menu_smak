@@ -49,6 +49,7 @@ def cart_add(request):
 @csrf_exempt
 def place_order(request):
     cart = Cart(request)
+    print(request.POST)
     post_data = json.loads(list(request.POST.keys())[0])
     cart_price = post_data.get('cartPrice')
 

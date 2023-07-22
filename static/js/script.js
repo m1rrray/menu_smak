@@ -4,14 +4,14 @@ window.addEventListener ('DOMContentLoaded', () => {
           prev = document.querySelector('.stocks__slider-prev'),
           next = document.querySelector('.stocks__slider-next'),
           slidesWrapper = document.querySelector('.stocks__slider-wrapper'), // - главная обертка слайдера
-          slidesField = document.querySelector('.stocks__slider-inner'), //- поле с нашими слайдами - ообертка
+          slidesField = document.querySelector('.stocks__slider-inner'), //- поле с нашими слайдами - обертка
           width = window.getComputedStyle(slidesWrapper).width; // - получаем ширину обертку, которая показывает ширину
 
     // let slideIndex = 1;
-    let offset = 0; // - отступ чтоб понимать на сколько мы отсутпили вправо или влево
+    let offset = 0; // - отступ, чтобы понимать, на сколько мы отступили вправо или влево
 
-    slidesField.style.width = 100  * slides.length + '%'; // - чтоб поместить все слайды которые есть на странице мы помещаем в обетку
-    slidesField.style.display = 'flex'; //- делаем нашу обертку в горищонтальное положение
+    slidesField.style.width = 100  * slides.length + '%'; // - чтоб поместить все слайды которые есть на странице мы помещаем в обертку
+    slidesField.style.display = 'flex'; //- делаем нашу обертку в горизонтальное положение
     slidesField.style.transition = '0.5s all'; // и добавляем плавность
 
     slidesWrapper.style.overflow = 'hidden';
@@ -19,13 +19,13 @@ window.addEventListener ('DOMContentLoaded', () => {
 
     slides.forEach(slide => {
         slide.style.width = width;
-    }); // - все слайдам задаем нужную нам ширину что они не вылезали за главную обертку
+    }); // - все слайдам задаем нужную нам ширину, что они не вылезали за главную обертку
 
     function nextSlide() {
-        if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) {
+        if (offset === +width.slice(0, width.length - 2) * (slides.length - 1)) {
             // ширина одного слайда умноженное на количество слайдов
             // Width - 900px, нам надо убрать px ---- +width.slice(0, width.length - 2) = 900
-            offset = 0; // = это если мы дошли в конецц
+            offset = 0; // = это если мы дошли в конец
         } else {
             offset += +width.slice(0, width.length - 2)  //-это если надо в начало
         }
@@ -43,11 +43,11 @@ window.addEventListener ('DOMContentLoaded', () => {
 
     slides.forEach(slide => {
         slide.style.width = width;
-    }); // - все слайдам задаем нужную нам ширину что они не вылезали за главную обертку
+    }); // - все слайдам задаем нужную нам ширину, что они не вылезали за главную обертку
 
 
     prev.addEventListener('click', () => {
-        if ( offset == 0) {
+        if ( offset === 0) {
             offset = +width.slice(0, width.length - 2) * (slides.length - 1)
                     // ширина одного слайда умноженное на количество слайдов
         } else {
@@ -62,8 +62,7 @@ window.addEventListener ('DOMContentLoaded', () => {
     // tabs
 
     let button = document.querySelectorAll('.menu__tab')
-    let  photoes = document.querySelectorAll('.menu__content')
-
+    document.querySelectorAll('.menu__content');
     for (let i = 0; i < button.length; i++){
         button[i].addEventListener ('click', function() {
             for(let j = 0; j < button.length; j++) {
@@ -105,12 +104,11 @@ window.addEventListener ('DOMContentLoaded', () => {
     //добавление количество блюд
     const minus = document.querySelector('.button__minus'),
           plus = document.querySelector('.button__plus');
-     number = document.querySelector('.button__counter-number');
-    let drink = document.querySelector(".modal__title");
+    let number = document.querySelector('.button__counter-number');
+
 
 
     minus.addEventListener('click', () => {
-        // minusNumber();
         if (parseInt(number.value) > 1) {
             number.value = parseInt(number.value) - 1;}
     });
@@ -122,36 +120,31 @@ window.addEventListener ('DOMContentLoaded', () => {
         }
     })
 
-    var addButtons = document.querySelectorAll('.button');
+    const addButtons = document.querySelectorAll('.button');
 
     // Добавляем обработчик события клика для каждой кнопки
     addButtons.forEach(function(button) {
       button.addEventListener('click', function() {
         // Получаем информацию о блюде из атрибутов data-*
-          var dishPicture = button.dataset.dishPicture;
-        var dishId = button.dataset.dishId;
-        var dishName = button.dataset.dishName;
-        var dishDescription = button.dataset.dishDescription;
-        var dishPrice = button.dataset.dishPrice;
-        var dishWeight = button.dataset.dishWeight;
-        var dishCategory = button.dataset.dishCategory;
+          const dishPicture = button.dataset.dishPicture;
+          const dishId = button.dataset.dishId;
+          const dishName = button.dataset.dishName;
+          const dishDescription = button.dataset.dishDescription;
+          const dishPrice = button.dataset.dishPrice;
+          const dishWeight = button.dataset.dishWeight;
+          const dishCategory = button.dataset.dishCategory;
 
 
-
-        // Отображаем информацию о блюде в модальном окне
+          // Отображаем информацию о блюде в модальном окне
         document.querySelector('#product_id').value = dishId;
         document.querySelector('#my-modal__img-food').src = '/static/img/' + dishPicture;
         document.querySelector('.modal .modal__title').textContent = dishName;
         document.querySelector('.modal .modal__text').textContent = dishDescription;
         document.querySelector('.modal .modal__img-price').textContent = dishPrice + ' ₽';
-        if (dishCategory == 'drink')
+        if (dishCategory === 'drink')
             document.querySelector('.modal .modal__img-grams').textContent = dishWeight + 'мл' ;
         else
             document.querySelector('.modal .modal__img-grams').textContent = dishWeight + ' г' ;
-
-
-        // Открываем модальное окно
-        // document.querySelector('.modal').classList.add('show');
       });
     })
 
@@ -166,8 +159,6 @@ window.addEventListener ('DOMContentLoaded', () => {
                 if (modal.classList.contains('hide')) {
                     modal.classList.remove('hide');
                     modal.classList.add('fade');
-                    // number.innerHTML = counter;
-
                 }
             });
         });
@@ -181,89 +172,96 @@ window.addEventListener ('DOMContentLoaded', () => {
     }
 
     document.addEventListener('keydown', (e) => {
-        if (e.code == 'Escape' && !modal.classList.contains('hide')) {
+        if (e.code === 'Escape' && !modal.classList.contains('hide')) {
             closeModal();
         }
     });
 
     document.addEventListener('keydown', (e) => {
-        if (e.code == 'Escape' && !modal.classList.contains('hide')) {
+        if (e.code === 'Escape' && !modal.classList.contains('hide')) {
             closeModal();
         }
-    });// закрыти на нажатие вне escape
+    });// закрытьи на нажатие вне escape
 
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             closeModal();
         }
-    }); // закрыти на нажатие вне окна
+    }); // закрытьи на нажатие вне окна
 
     const formbutton = document.querySelector('#add-to-cart-button')
 
-    formbutton.addEventListener('click', (e) => {
-
-        // location.reload();
+    formbutton.addEventListener('click', () => {
         closeModal();
-        // location.reload();
-
-
-
     })
 
 
     closeModal();
     openModal();
 
+});
+
+function sendUpdateQuantityRequest(value, dishId) {
+    const formData = new FormData();
+    formData.append('update_quantity', value);
+    formData.append('id', dishId);
+
+    const csrfToken = "{{ csrf_token }}";
+
+    fetch('/cart/update/', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-CSRFToken': csrfToken
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Network response was not ok');
+      })
+      .then(data => {
+        console.log(data);
+        location.reload();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+
+function addToCart(postId) {
+    const quantity = 1;
+    const csrfToken = "{{ csrf_token }}";
+    fetch('/cart/add/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-CSRFToken': csrfToken,
+      },
+      body: `product_id=${postId}&quantity=${quantity}`,
+    })
+      .then(response => response.text())
+      .then(() => {
+        location.reload();
+      })
+      .catch(error => {
+        console.error('Ошибка при обращении к серверу:', error);
+      });
+    }
 
 
+const plusButtons = document.querySelectorAll('.button__plus');
+const minusButtons = document.querySelectorAll('.button__minus');
 
+plusButtons.forEach(function(button) {
+button.addEventListener('click', () => {
+  sendUpdateQuantityRequest('plus', button.dataset.dishId);
+});
+});
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // showSlides(slideIndex);
-
-    // function showSlides(n) {
-    //     if (n > slides.length) {
-    //         slideIndex = 1;
-    //     }
-
-    //     if ( n < 1) {
-    //         slideIndex = slides.length
-    //     }
-
-    //     slides.forEach(item => item.style.display ='none');
-
-    //     slides[slideIndex - 1].style.display ='block';
-    // }
-
-    // // в функции мы показываем нам нужный слайд, и если наш слайд больше количества слайдов то возвращаемся к первому, если наоборот то к последнему
-    // // каждому слайду мы ставим дсплэй нон, а нужному нам дисплэй блок, для отображения
-
-    // function plusSlides(n) {
-    //     showSlides(slideIndex += n);
-    // }
-
-    // prev.addEventListener('click', () => {
-    //     plusSlides(-1);
-    // });
-
-    // next.addEventListener('click', () => {
-    //     plusSlides(1);
-    // });
-
+minusButtons.forEach(function(button) {
+button.addEventListener('click', () => {
+  sendUpdateQuantityRequest('minus', button.dataset.dishId);
+});
 });

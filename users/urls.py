@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+
 from .views import UserProfileView, add_address, edit_profile, addresses, delete_address
 
 urlpatterns = [
