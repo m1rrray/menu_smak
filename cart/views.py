@@ -1,4 +1,4 @@
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -8,21 +8,8 @@ from cart.forms import AddNewProductCart, UsePromotion
 from posts.models import Post
 from users.models import Order, OrderItem
 
+import json
 
-# def apply_promotion(request):
-#     if request.method == 'POST':
-#         form = UsePromotion(request.POST)
-#         if form.is_valid():
-#             promocode = form.cleaned_data['promocode']
-#             # Здесь вы можете использовать полученный промокод и выполнить нужные действия
-#             # например, применить скидку к корзине или проверить его наличие в базе данных
-#
-#             # После выполнения нужных действий, вы можете вернуться на страницу корзины
-#             return redirect('cart_detail')
-#     else:
-#         form = UsePromotion()
-#
-#     return render(request, 'cart.html', {'form': form})
 
 @csrf_exempt
 @require_POST
@@ -30,7 +17,6 @@ def update_cart(request):
     cart = Cart(request)
     update_type = request.POST.get('update_quantity')
     product_id = request.POST.get('id')
-    # print(update_type, product_id)
 
     if update_type == 'plus':
         cart.add(int(product_id), quantity=1, update_quantity=True, operation=update_type)
@@ -63,14 +49,19 @@ def cart_add(request):
 @csrf_exempt
 def place_order(request):
     cart = Cart(request)
+<<<<<<< HEAD
     form = UsePromotion(request.POST)
     if form.is_valid():
         promocode = form.cleaned_data['promocode']
         cart.set_promocode(promocode)
+=======
+    print(request.POST)
+    post_data = json.loads(list(request.POST.keys())[0])
+    cart_price = post_data.get('cartPrice')
+>>>>>>> 62612da4a7400d0d96e37463391a4548a250c579
 
     # Создание заказа
-    order = Order.objects.create(user=request.user, total_price=cart.get_total_price_with_prom())
-
+    order = Order.objects.create(user=request.user, total_price=cart_price)
 
     # Сохранение содержимого заказа
     for item in cart:
@@ -78,42 +69,12 @@ def place_order(request):
         quantity = item['quantity']
         price = item['price']
         OrderItem.objects.create(order=order, product=product, quantity=quantity, price=price)
+
     # Очистка корзины после оформления заказа
     cart.clear()
 
     # Возвращение JSON-ответа с ID созданного заказа или сообщением об успешном создании заказа
     return JsonResponse({'order_id': order.id, 'message': 'Заказ успешно создан'})
-    # if request.method == 'POST':
-    #     cart = Cart(request)
-    #     user = request.user
-    #     total_price = cart.get_total_price()
-    #
-    #     # Создаем экземпляр Order
-    #     order = Order.objects.create(user=user, total_price=total_price)
-    #
-    #     # Получаем содержимое корзины
-    #     cart_items = cart.cart.values()
-    #
-    #     # Добавляем блюда из корзины в модель OrderItem
-    #     for item in cart_items:
-    #         product_id = item['product_id']
-    #         quantity = item['quantity']
-    #         price = item['price']
-    #
-    #         order_item = OrderItem.objects.create(
-    #             order=order,
-    #             product=Post.objects.get(pk=product_id),
-    #             quantity=quantity,
-    #             price=price
-    #         )
-    #
-    #     # Очищаем корзину
-    #     cart.clear()
-    #
-    #     # Перенаправляем пользователя на страницу подтверждения заказа
-    #     return redirect('profile')
-    # return redirect("cart")
-    # return render(request, 'cart.html', {'cart': cart})
 
 
 def cart_detail(request):

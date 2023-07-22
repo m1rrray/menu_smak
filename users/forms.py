@@ -1,13 +1,11 @@
-import phonenumber_field
-from django.contrib.auth import authenticate
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, UserModel
 from django import forms
+from django.contrib.auth import authenticate
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, UserModel
 from django.core.exceptions import ValidationError
 from django.utils.text import capfirst
+from django.utils.translation import gettext_lazy as _
 
 from .models import User, Address
-from phonenumber_field.widgets import PhoneNumberPrefixWidget
-from django.utils.translation import gettext_lazy as _
 
 
 class CreationForm(UserCreationForm):
@@ -19,14 +17,11 @@ class CreationForm(UserCreationForm):
         fields = ("phone", "first_name", "last_name", "password1", 'password2',)
 
         widgets = {
-            # 'fullname': forms.TextInput(attrs={'class': 'input__text'}),
             'first_name': forms.TextInput(attrs={'class': 'input__text'}),
             'last_name': forms.TextInput(attrs={'class': 'input__text'}),
             'phone': forms.TextInput(attrs={'class': 'input__text'}),
-            # 'email': forms.EmailInput(attrs={'class': 'input__text'}),
             'password1': forms.PasswordInput(attrs={'class': 'input__text'}),
             'password2': forms.PasswordInput(attrs={'class': 'input__text'}),
-            # 'username': forms.TextInput(attrs={'class': 'input__text'}),
         }
 
 

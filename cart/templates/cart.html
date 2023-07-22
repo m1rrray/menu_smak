@@ -35,59 +35,15 @@
                                         </div>
                                         <div class="busket-order__button">
                                             <div class="button__counter">
-                                                <button class="button__minus" id="minus-to-cart-button" type="button" data-dish-id="{{ dish.product.pk }}"><img src={% static "icons/minus.svg" %} alt="minus"></button>
+                                                <button class="button__minus" id="minus-to-cart-button" type="button" data-dish-id="{{ dish.product.pk }}"><img src={% static "icons/minus.svg" %} alt=""></button>
                                                 <div class="button__counter-number" >{{ dish.quantity }}</div>
-                                                <button class="button__plus" id="plus-to-cart-button" data-dish-id="{{ dish.product.pk }}" type="submit"><img src={% static "icons/plus.svg" %} alt="plus"></button>
+                                                <button class="button__plus" id="plus-to-cart-button" data-dish-id="{{ dish.product.pk }}" type="submit"><img src={% static "icons/plus.svg" %} alt=""></button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 {% endfor %}
-                                <script>
-                                    const plusButtons = document.querySelectorAll('.button__plus');
-                                    const minusButtons = document.querySelectorAll('.button__minus');
-                                    plusButtons.forEach(function(button) {
-                                        button.addEventListener('click', () => {
-                                            sendUpdateQuantityRequest('plus', button.dataset.dishId);
-                                        })
-                                    });
-                                    minusButtons.forEach(function(button) {
-                                        button.addEventListener('click', () => {
-                                            console.log('hihihi');
-                                            sendUpdateQuantityRequest('minus', button.dataset.dishId);
-                                        })
-                                    });
 
-                                    // Функция для отправки запроса на сервер
-                                    function sendUpdateQuantityRequest(value, dishId) {
-                                        const formData = new FormData();
-                                        formData.append('update_quantity', value);
-                                        formData.append('id', dishId);
-
-                                        const csrfToken = "{{ csrf_token }}";
-
-                                      fetch('/cart/update/', {
-                                          method: 'POST',
-                                          body: formData,
-                                          headers: {
-                                              'X-CSRFToken': csrfToken
-                                          }
-                                      })
-                                      .then(response => {
-                                            if (response.ok) {
-                                                return response.json();
-                                            }
-                                            throw new Error('Network response was not ok');
-                                      })
-                                      .then(data => {
-                                            console.log(data);
-                                            location.reload();
-                                      })
-                                      .catch(error => {
-                                            console.error('Error:', error);
-                                      });
-                                    }
-                                </script>
                                 <div class="divider divider__bottom"></div>
                             </div>
                             
@@ -129,31 +85,6 @@
                     </div>
                 </section>
             </div>
-            <script>
-              function addToCart(postId) {
-                const quantity = 1;
-                const csrfToken = "{{ csrf_token }}";
-                fetch('/cart/add/', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-CSRFToken': csrfToken,
-                  },
-                  body: `product_id=${postId}&quantity=${quantity}`,
-                })
-                  .then(response => response.text())
-                  .then(data => {
-                    // Здесь можно обработать ответ от сервера, например, обновить состояние корзины на странице.
-                    console.log(data);
-                    location.reload();
-                  })
-                  .catch(error => {
-                    console.error('Ошибка при обращении к серверу:', error);
-                  });
-              }
-
-
-            </script>
 
             <div class="busket__right">
                 <section class="busket-geoposition">
@@ -162,11 +93,14 @@
                             <div class="busket-geoposition__title">
                                 <h2>Доставка</h2>
                             </div>
-{#                            <button class="button__clear">Изменить</button>#}
                         </div>
 
                         <div class="busket-geoposition__local">
-                            {{ last_address }}
+                            {% if last_address %}
+                                {{ last_address }}
+                            {% else %}
+                                Сначала нужно добавить адрес через профиль
+                            {% endif %}
                         </div>
                     </div>
     
@@ -174,20 +108,24 @@
                 <script>
                     function CreateOrder() {
                         const csrfToken = "{{ csrf_token }}";
+                        const cartPrice = {{ cart.get_total_price_with_prom }};
                         const cartData = JSON.stringify({{ cart.get_cart_items|safe }});
-                        console.log('idi naxui')
+
+                        const requestBody = {
+                            cartData: cartData,
+                            cartPrice: cartPrice
+                        };
+
                         fetch('/cart/create_order/', {
                           method: 'POST',
                           headers: {
                             'Content-Type': 'application/x-www-form-urlencoded',
                             'X-CSRFToken': csrfToken,
                           },
-                          body: cartData,
+                          body: JSON.stringify(requestBody)
                         })
                           .then(response => response.text())
                           .then(data => {
-                            // Здесь можно обработать ответ от сервера, например, обновить состояние корзины на странице.
-                            {#console.log(data);#}
                             location.reload();
                           })
                           .catch(error => {
@@ -225,13 +163,10 @@
                         <button class="button button__big" onclick=CreateOrder()>Оформить заказ</button>
                     </div>
                 </section>
-{#                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>#}
             </div>
         </section>
     </section>
     
-
-
 
 {% endblock %}
 

@@ -8,7 +8,6 @@ class UserManager(BaseUserManager):
         """
         Creates and saves a User with the given email and password.
         """
-        # email = self.normalize_email(email)
         if not phone:
             raise ValueError('The given email must be set')
         print(phone)

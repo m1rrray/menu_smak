@@ -19,21 +19,17 @@
 
                             <form method="post" class="login__form">
                                 {% csrf_token %}
-{#                                {{ form.as_p }}#}
                                 <div>{{ form.non_field_errors }}</div>
                                 <div class="input login__input">
-{#                                    <input type="text" name="name"   class="input__text" required>#}
                                     {{ form.phone }}
                                     <label class="label">Номер телефона</label>
                                 </div>
                                 <div class="input login__input">
-{#                                    <input type="password" id="password__enter" name="password"  class="input__text" required>#}
                                     {{ form.password }}
                                     <label class="label">Пароль</label>
                                     <img  data-hide src={% static "icons/open_eye.svg" %} alt="eye" class="open__eye fade hide">
                                     <img  data-show src={% static "icons/close_eye.svg" %} alt="eye" class="close__eye fade">
                                 </div>
-{#                                {{ form.as_p }}#}
 
                                 <div class="login__button">
                                     <button class="button button__big button__dark" type="submit">
@@ -47,11 +43,6 @@
             </div>
         </div>
     </section>
-
-
-
-
-
 
 {% endblock %}
 
